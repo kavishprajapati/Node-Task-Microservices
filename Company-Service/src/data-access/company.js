@@ -1,11 +1,11 @@
-function makeCompanyDb({ cockroach }) {
+function makeCompany({ cockroach }) {
     return Object.freeze({
         getAllCompanyData,
         createCompany,
         deleteCompany,
         getCompanyData,
         updateCompany,
-        getDataByName
+        getCompanyByName
     });
 
     async function getAllCompanyData() {
@@ -65,7 +65,6 @@ function makeCompanyDb({ cockroach }) {
     async function deleteCompany({ id }) {
         try {
             const deleteQuery = await cockroach.query(`delete from companytable where id = '${id}'`)
-         
         }
         catch (err) {
             throw err
@@ -80,7 +79,6 @@ function makeCompanyDb({ cockroach }) {
                 update.push(`${key} = '${value}'`);
             });
 
-
             const updateQuery = await cockroach.query(`UPDATE companytable SET ${update.join(',')} WHERE id = '${id}'`)
      
         }
@@ -90,10 +88,10 @@ function makeCompanyDb({ cockroach }) {
     }
 
 
-    async function getDataByName({ cmpname }) {
+    async function getCompanyByName({ companyname }) {
         try {
             
-            const dataByNameQuery = await cockroach.query(`select * from companytable where name = '${cmpname}'`)
+            const dataByNameQuery = await cockroach.query(`select * from companytable where name = '${companyname}'`)
   
 
             const result = dataByNameQuery.rows;
@@ -113,4 +111,4 @@ function makeCompanyDb({ cockroach }) {
 
 
 
-module.exports = makeCompanyDb
+module.exports = makeCompany

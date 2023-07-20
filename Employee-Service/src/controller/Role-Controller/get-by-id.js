@@ -12,7 +12,7 @@ module.exports = function makeGetRoleDataByIdAction( {getRoleDataById} ){
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 data: "fail to get a data"
             })

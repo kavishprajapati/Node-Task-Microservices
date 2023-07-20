@@ -1,10 +1,10 @@
-module.exports = function makeUserLogin({ checkUserInDb, Joi, bcrypt, storeJWTToken, jwt, sendMail }) {
+module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail }) {
     return async function userLogin({ username, password }) {
         try {
 
-            const validatedData = await validation({ username, password })
+            const validatedData = await validateData({ username, password })
 
-            const userExit = await checkUserInDb({ username: validatedData.username });
+            const userExit = await userTable.getUserByName({ username: validatedData.username });
 
             if (userExit.length === 0) {
                 // User does not exist in the database
@@ -15,14 +15,14 @@ module.exports = function makeUserLogin({ checkUserInDb, Joi, bcrypt, storeJWTTo
             const user = userExit[0];
             const passwordMatch = await bcrypt.compare(validatedData.password, user.password);
 
-            const userid = user.userid // I am passing this in storeJWTTokken function.
+            const userId = user.userid // I am passing this in storeJWTTokken function.
 
             if (passwordMatch) {
                 // Passwords match, user is authenticated
                 console.log("User authenticated");
 
-                const token = jwt.sign({ userid: user.userid }, 'kavish-token', { expiresIn: '24h' });
-                await storeJWTToken({ userid, token })
+                const token = jwt.sign({ userid: userId }, 'kavish-token', { expiresIn: '24h' });
+                await userTable.storeUserjwtToken({ userId, token })
                 console.log("Token stored");
                 await sendMail()
                 console.log("Mail sent successfully");
@@ -38,7 +38,7 @@ module.exports = function makeUserLogin({ checkUserInDb, Joi, bcrypt, storeJWTTo
     }
 
 
-    function validation({ username, password }) {
+    function validateData({ username, password }) {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         const schema = Joi.object({

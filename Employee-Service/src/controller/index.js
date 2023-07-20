@@ -12,7 +12,7 @@ const deleteEmployeeAction = makeDeleteEmployeeAction({deleteEmployee})
 const makeUpdateEmployeeAction = require('./update-employee')
 const updateEmployeeAction = makeUpdateEmployeeAction({ updateEmployee })
 
-const makeGetEmployeeDataByIdAction = require('./get-data-by-id')
+const makeGetEmployeeDataByIdAction = require('./get-employee-by-id')
 const getEmployeeDataByIdAction = makeGetEmployeeDataByIdAction({ getEmployeeDataById })
 
 module.exports = { createEmployeeAction, getAllEmployeeAction, deleteEmployeeAction, updateEmployeeAction, getEmployeeDataByIdAction }

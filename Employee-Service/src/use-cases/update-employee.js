@@ -1,16 +1,16 @@
-module.exports = function makeUpdateEmployee({ EmployeeData, Joi }) {
+module.exports = function makeUpdateEmployee({ EmployeeTable, Joi }) {
     return async function updateemployee(updateData, id) {
 
         try {
-            const validatedData = await validation({ updateData, id })
-            await EmployeeData({ ...validatedData, id })
+            const validatedData = await validateData({ updateData, id })
+            await EmployeeTable.updateEmployee({ ...validatedData, id })
         }
         catch (err) {
             throw err;
         }
     }
 
-    function validation({ updateData, id }) {
+    function validateData({ updateData, id }) {
 
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required(),
@@ -23,9 +23,7 @@ module.exports = function makeUpdateEmployee({ EmployeeData, Joi }) {
         if (error) {
             throw new error.details[0].message;
         }
-        else {
-            return value;
-        }
-
+        
+        return value;
     }
 }

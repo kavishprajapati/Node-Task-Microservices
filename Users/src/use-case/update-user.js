@@ -1,9 +1,9 @@
-module.exports = function makeUpdateUser({ userData, Joi }){
+module.exports = function makeUpdateUser({ userTable, Joi }){
     return async function updateUser({ updateUserData, id }){
 
         try{
-            const validatedData = validation({ updateUserData, id })
-            await userData({ ...validatedData, id })
+            const validatedData = validateData({ updateUserData, id })
+            await userTable.updateUser({ ...validatedData, id })
         }
         catch(err){
             throw err
@@ -11,7 +11,7 @@ module.exports = function makeUpdateUser({ userData, Joi }){
 
     }
 
-    function validation({ updateUserData, id }) {
+    function validateData({ updateUserData, id }) {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 
@@ -33,9 +33,8 @@ module.exports = function makeUpdateUser({ userData, Joi }){
         if (error) {
             throw new Error(error.details[0].message);
         }
-        else {
-            return value;
-        }
+            
+        return value;
     }
 }
 

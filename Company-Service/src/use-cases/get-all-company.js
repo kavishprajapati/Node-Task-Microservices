@@ -1,8 +1,7 @@
-module.exports = function makeGetAllCompany({companyData}){
+module.exports = function makeGetAllCompany({ companyTable }){
     return async function getAllCompany(){
         try{
-            const cmpData = await companyData();
-            return cmpData;
+            return await companyTable.getAllCompanyData();
         }
         catch(err){
             throw err

@@ -1,15 +1,15 @@
-module.exports = function makeGetDataByNameAction({ getDataByName }) {
-    return async function getDataByNameAction (req, res) {
+module.exports = function makeGetCompanyByNameAction({ getCompanyByName }) {
+    return async function getCompanyByNameAction (req, res) {
         try{
-            const cmpname = req.params.name;
-            const companyData = await getDataByName({cmpname});
+            const companyname = req.params.name;
+            const companyData = await getCompanyByName({ companyname });
             res.status(200).json({
                 status: "Success",
                 data: { companyData }
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 data: {
                     error: err

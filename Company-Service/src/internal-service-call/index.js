@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const makeInternalCallCreateEmployee = require('./create-employee')
-const internalCallCreateEmployee = makeInternalCallCreateEmployee({ axios })
+const makeCreateEmployee = require('./create-employee')
+const createEmployee = makeCreateEmployee({ axios })
 
-module.exports = { internalCallCreateEmployee }
+module.exports = { createEmployee }

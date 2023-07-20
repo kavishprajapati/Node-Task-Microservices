@@ -1,4 +1,4 @@
-const {getAllCompany, createCompany, deleteCompany, getCompany, updateCompany, getDataByName} = require('../use-cases')
+const {getAllCompany, createCompany, deleteCompany, getCompany, updateCompany, getCompanyByName} = require('../use-cases')
 
 
 //to get-all-data
@@ -22,7 +22,7 @@ const makeUpdateCompanyAction = require('./update-company')
 const updateCompanyAction = makeUpdateCompanyAction({updateCompany})
 
 //get data by name
-const makeGetDataByNameAction = require('./get-by-name')
-const getDataByNameAction = makeGetDataByNameAction({ getDataByName })
+const makeGetCompanyByNameAction = require('./get-company-by-name')
+const getCompanyByNameAction = makeGetCompanyByNameAction({ getCompanyByName })
 
-module.exports = {getAllCompanyAction, getCompanyAction, createCompanyAction, deleteCompanyAction, updateCompanyAction, getDataByNameAction}
+module.exports = {getAllCompanyAction, getCompanyAction, createCompanyAction, deleteCompanyAction, updateCompanyAction, getCompanyByNameAction}

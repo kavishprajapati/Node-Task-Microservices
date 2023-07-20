@@ -4,7 +4,7 @@ module.exports = function makeDeleteAssignedRoleAction({ deleteAssignedRole }){
         try{
             const id = req.params.id
             await deleteAssignedRole({ id })
-            res.status(200).json({
+            res.status(204).json({
                 status: "Success",
                 data: "Assigned Role Deleted Successfuly"
             })

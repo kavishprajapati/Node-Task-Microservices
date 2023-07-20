@@ -1,16 +1,16 @@
-module.exports = function makeDeleteEmployee({ EmployeeData, Joi }){
+module.exports = function makeDeleteEmployee({ EmployeeTable, Joi }){
     return async function deleteEmployee({id}){
 
         try{
-            const validatedId = validation ({ id });
-            await EmployeeData( {id: validatedId.id} ) 
+            const validatedId = validateData ({ id });
+            await EmployeeTable.deleteEmployee( {id: validatedId.id} ) 
         }
         catch(err){
             throw err
         }
     }
 
-    function validation({ id }){
+    function validateData({ id }){
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required()
         }).validate({id})
@@ -18,9 +18,8 @@ module.exports = function makeDeleteEmployee({ EmployeeData, Joi }){
         if (error){
             throw new error.details[0].message;
         }
-        else{
-            return value
-        }
+       
+        return value 
     }
 
 }

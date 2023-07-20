@@ -5,13 +5,13 @@ module.exports = function makeUpdateRoleAction({ updateRole }){
             const id = req.params.id
             const { roleName, permission } = req.body
             await updateRole({ roleName, permission, id })
-            res.status(201).json({
+            res.status(200).json({
                 status: "Success",
                 data: "Role updated"
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 data: "fail to update data"
             })

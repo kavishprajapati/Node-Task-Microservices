@@ -1,4 +1,4 @@
-function makeEmployeeDb({ cockroach }) {
+function makeEmployee({ cockroach }) {
   return Object.freeze({
     createEmployee,
     getAllEmployee,
@@ -253,4 +253,4 @@ function makeEmployeeDb({ cockroach }) {
 
 }
 
-module.exports = makeEmployeeDb;
+module.exports = makeEmployee;

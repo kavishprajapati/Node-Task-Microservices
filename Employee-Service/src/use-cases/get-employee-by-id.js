@@ -1,12 +1,12 @@
-module.exports = function makeGetEmployeeDataById({ EmployeeData, Joi, getCompanyData }) {
+module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompanyData }) {
     return async function getEmployeeDataById({ id }) {
       try {
         const validatedId = validation({ id });
-        const data = await EmployeeData({ id: validatedId.id });
+        const data = await EmployeeTable.getEmployee({ id: validatedId.id });
   
-        const cmpid = data[0].cmpid;
+        const companyId = data[0].cmpid;
   
-        const companyData = await getCompanyData({ cmpid });
+        const companyData = await getCompanyData({ companyId });
   
         const joinedData = data.map(item => {
           const { cmpid, ...rest } = item;
@@ -16,10 +16,11 @@ module.exports = function makeGetEmployeeDataById({ EmployeeData, Joi, getCompan
         });
         
         return joinedData
-      } catch (err) {
+      } 
+      catch (err) {
         throw err;
       }
-    };
+    }
   
     function validation({ id }) {
       const { error, value } = Joi.object({
@@ -28,9 +29,9 @@ module.exports = function makeGetEmployeeDataById({ EmployeeData, Joi, getCompan
   
       if (error) {
         throw new Error(error.details[0].message);
-      } else {
-        return value;
-      }
+      } 
+      
+      return value;
     }
   };
   

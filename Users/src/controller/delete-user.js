@@ -3,14 +3,14 @@ module.exports = function makeDeleteUserAction({ deleteUser }){
         try{
             const id = req.params.id
             const userdeleted = await deleteUser({ id })
-            res.status(200).json({
+            res.status(204).json({
                 status: "Success",
                 data: "User Deleted Successfully"
             })
 
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 data: "Cannot able to delete user"
             })

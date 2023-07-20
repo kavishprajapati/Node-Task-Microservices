@@ -9,7 +9,7 @@ module.exports = function makeGetAllRoleDetailsAction({ getAllRoleDetails }) {
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 error: err
             })

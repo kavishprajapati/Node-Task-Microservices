@@ -1,12 +1,12 @@
 module.exports = function makeGetCompanyData({ axios }) {
 
-    return async function getCompanyData({ cmpid }) {
+    return async function getCompanyData({ companyId }) {
         try {
 
             
-            const response = await axios.get(`http://localhost:9090/company/${cmpid}`);
+            const response = await axios.get(`http://localhost:9090/company/${companyId}`);
         
-            const CompanyData = response.data.data.companyData
+            const companyData = response.data.data.companyData
 
             // const data = response.data.data.companyData
             // const id = data[0].id
@@ -18,7 +18,7 @@ module.exports = function makeGetCompanyData({ axios }) {
             // if (companyData.data.item.length === 0 ){
             //     throw new Error("company data not found")
             // }
-            return CompanyData
+            return companyData
         }
         catch (err) {
             throw err

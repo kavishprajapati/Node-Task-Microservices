@@ -4,13 +4,13 @@ module.exports = function makeCreateUserAction({ createUser }){
             const { username, useremail, password } = req.body;
             const userdata = await createUser({ username, useremail, password })
     
-            res.status(200).json({
+            res.status(201).json({
                 status: "Success",
                 data: "New User Successfully Created"
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "fail",
                 data: "Failed To Create New User"
             })

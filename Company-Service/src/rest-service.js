@@ -6,13 +6,12 @@ const Controller = require('./controllers')
 router
     .get('/company', Controller.getAllCompanyAction)
     .get('/company/:id', Controller.getCompanyAction)
-    .get('/company/api/:name', Controller.getDataByNameAction)
+    .get('/company/:name', Controller.getCompanyByNameAction)
     .post('/company', Controller.createCompanyAction)
     .delete('/company/:id', Controller.deleteCompanyAction)
     .patch('/company/:id', Controller.updateCompanyAction)
     
 module.exports = router
-
 
 
 

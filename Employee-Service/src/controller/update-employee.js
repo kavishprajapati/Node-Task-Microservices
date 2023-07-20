@@ -5,13 +5,13 @@ module.exports = function makeUpdateEmployeeAction ({ updateEmployee }) {
             const id = req.params.id;
             const updateData = req.body;
             await updateEmployee( updateData, id )
-            res.status(201).json({
+            res.status(200).json({
                 status: "Success",
                 data: "Employee Data Updated Successfully"
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "Fail",
                 data: "Fail to update employee data"
             })

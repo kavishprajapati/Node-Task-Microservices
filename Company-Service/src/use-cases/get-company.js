@@ -1,16 +1,15 @@
-module.exports = function makeGetCompany({ companyData, Joi }) {
+module.exports = function makeGetCompany({ companyTable, Joi }) {
     return async function getCompany({ id }) {
         try {
-            const validatedId = validation({ id })
-            const Data = await companyData({ id: validatedId.id })
-            return Data
+            const validatedId = validateData({ id })
+            return await companyTable.getCompanyData({ id: validatedId.id })
         }
         catch (err) {
             throw err
         }
     }
 
-    function validation({ id }) {
+    function validateData({ id }) {
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required()
         }).validate({ id });
@@ -18,10 +17,9 @@ module.exports = function makeGetCompany({ companyData, Joi }) {
         if (error) {
             throw new error.details[0].message;
         }
-        else {
-            return value;
-
-        }
+       
+        return value;
+       
     }
 }
 

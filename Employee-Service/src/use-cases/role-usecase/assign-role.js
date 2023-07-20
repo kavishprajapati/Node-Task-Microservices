@@ -1,10 +1,10 @@
-module.exports = function makeAssignRole({ EmployeeData, Joi }){
+module.exports = function makeAssignRole({ EmployeeTable, Joi }){
     return async function assignRole({ roleid, employeeid }){
 
         try{
 
-            const validatedId = await validation({ roleid, employeeid })
-            const employeeData =  await EmployeeData({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
+            const validatedId = await validateData({ roleid, employeeid })
+            const employeeData =  await EmployeeTable.assignRole({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
             
         }
         catch(err){
@@ -12,7 +12,7 @@ module.exports = function makeAssignRole({ EmployeeData, Joi }){
         }
     }
 
-    function validation({ roleid, employeeid }) {
+    function validateData({ roleid, employeeid }) {
         const { error, value } = Joi.object({
             roleid: Joi.string().uuid().required(),
             employeeid: Joi.string().uuid().required()
@@ -20,7 +20,7 @@ module.exports = function makeAssignRole({ EmployeeData, Joi }){
         if (error) {
             throw new Error(error.details[0].message);
         }
-            return value;
         
+        return value; 
     }
 }

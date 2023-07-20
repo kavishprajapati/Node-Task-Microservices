@@ -9,7 +9,7 @@ module.exports = function makeGetUserDataByIdAction({ getUserDataById }){
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "Fail",
                 data: "Fail to get data by an id"
             })

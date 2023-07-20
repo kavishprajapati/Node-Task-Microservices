@@ -1,9 +1,8 @@
-module.exports = function makeGetAllEmployee({ EmployeeData }){
+module.exports = function makeGetAllEmployee({ EmployeeTable }){
     return async function getAllEmployee(){
 
         try{
-            const allEmployeeData = await EmployeeData();
-            return allEmployeeData
+            return await EmployeeTable.getAllEmployee();
         }
         catch(err){
             throw err

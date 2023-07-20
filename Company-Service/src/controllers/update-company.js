@@ -5,13 +5,13 @@ module.exports = function makeUpdateCompanyAction({ updateCompany }) {
             const id = req.params.id;
             const updateData = req.body;
             await updateCompany({updateData, id})
-            res.status(201).json({
+            res.status(200).json({
                 status: "Success",
-                data: `Company Data is Updated for id ${id}`
+                data: 'Company Data is Updated'
             })
         }
         catch (err) {
-            res.status(404).json({
+            res.status(400).json({
                 status: "Error",
                 data: err
             })

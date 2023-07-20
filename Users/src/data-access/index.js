@@ -18,7 +18,7 @@ const cockroach = new Pool({
 
 })
 
-const makeUserDb = require('./userDb')
+const makeUserDb = require('./user')
 const userTable = makeUserDb({ cockroach, bcrypt })
 
 module.exports = { userTable }

@@ -1,14 +1,12 @@
-module.exports = function makeGetAssignedRole({ EmployeeData }){
+module.exports = function makeGetAssignedRole({ EmployeeTable }){
     return async function getAssignedRole(){
 
         try{
-            const getAllAssignedRoleDetails = await EmployeeData();
-            return getAllAssignedRoleDetails
+            return await EmployeeTable.getAssignedRole();
         }
         catch(err){
             throw err
         }
-
     }
 }
 

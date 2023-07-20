@@ -1,15 +1,15 @@
-module.exports = function makeUpdateRole({ EmployeeData, Joi }) {
+module.exports = function makeUpdateRole({ EmployeeTable, Joi }) {
     return async function updateRole({ roleName, permission, id }) {
         try {
-            const validatedData = await validation({ roleName, permission, id });
-            await EmployeeData({ roleName: validatedData.roleName, permission: validatedData.permission, id: validatedData.id })
+            const validatedData = await validateData({ roleName, permission, id });
+            await EmployeeTable.updateRole({ roleName: validatedData.roleName, permission: validatedData.permission, id: validatedData.id })
         } 
         catch (err) {
             throw err;
         }
     };
 
-    function validation({ roleName, permission, id }) {
+    function validateData({ roleName, permission, id }) {
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required(),
             roleName: Joi.string().min(2).max(20).required(),
@@ -18,10 +18,9 @@ module.exports = function makeUpdateRole({ EmployeeData, Joi }) {
 
         if (error) {
             throw new Error(error.details[0].message);
-        } else {
-            return value;
-        }
+        } 
+        
+        return value;
     }
-
 }
 

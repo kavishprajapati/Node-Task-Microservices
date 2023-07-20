@@ -6,7 +6,7 @@ module.exports = function makeCreateRoleAction({ createRole }){
             const {roleName, permission} = req.body
             const newRole = await createRole({ roleName, companyid ,permission })
             
-            res.status(200).json({
+            res.status(201).json({
                 status: "Success",
                 data: "New Role Is Created"
             })

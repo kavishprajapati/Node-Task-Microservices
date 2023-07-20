@@ -3,14 +3,14 @@ module.exports = function makeUserLoginAction({ userLogin }){
         try{
             const { username, password } = req.body
             await userLogin({ username, password })
-            res.status(201).json({
+            res.status(200).json({
                 status: "Success",
                 data: "User Authenticated",
                 data: "User Logged In Successfully"
             })
         }
         catch(err){
-            res.status(404).json({
+            res.status(400).json({
                 status: "Fail",
                 data: "User Authentication Failed"
             })

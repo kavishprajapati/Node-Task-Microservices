@@ -1,9 +1,9 @@
-module.exports = function makeCreateUser({ userData, Joi }){
+module.exports = function makeCreateUser({ userTable, Joi }){
     return async function createUser({ username, useremail, password }){
 
         try{
-            const validatedData = validation({ username, useremail, password })
-            const userdata = await userData({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
+            const validatedData = validateData({ username, useremail, password })
+            const userData = await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
         }
         catch(err){
             throw err
@@ -11,7 +11,7 @@ module.exports = function makeCreateUser({ userData, Joi }){
 
     } 
 
-    function validation({ username, useremail, password }) {
+    function validateData({ username, useremail, password }) {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       
         const schema = Joi.object({

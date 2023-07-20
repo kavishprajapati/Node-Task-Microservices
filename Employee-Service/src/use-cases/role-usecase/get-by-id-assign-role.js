@@ -1,11 +1,10 @@
-module.exports = function makeGetByIdAssignedRole({ EmployeeData, Joi }){
+module.exports = function makeGetByIdAssignedRole({ EmployeeTable, Joi }){
     return async function getByIdAssignedRole({ id }){
 
         try{
             
-            const validatedId = await validation({ id })
-            const assignedRole = await EmployeeData({ id: validatedId.id })
-            return assignedRole
+            const validatedId = await validateData({ id })
+            return await EmployeeTable.getByIdAssignedRole({ id: validatedId.id })
 
         }
         catch(err){
@@ -14,7 +13,7 @@ module.exports = function makeGetByIdAssignedRole({ EmployeeData, Joi }){
          
     }
 
-    function validation({ id }){
+    function validateData({ id }){
         const{ error, value } = Joi.object({
             id: Joi.string().uuid().required()
         }).validate({ id })
@@ -23,7 +22,5 @@ module.exports = function makeGetByIdAssignedRole({ EmployeeData, Joi }){
         }
 
         return value;
-
     }
-
 }

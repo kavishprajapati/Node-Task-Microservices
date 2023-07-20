@@ -1,9 +1,9 @@
-module.exports = function makeDeleteCompany({companyData, Joi, producer}){
+module.exports = function makeDeleteCompany({companyTable, Joi, producer}){
     return async function deleteCompany({id}){
 
         try{
-            const validatedId = validation({ id });
-            await companyData({ id: validatedId.id })
+            const validatedId = validateData({ id });
+            await companyTable.deleteCompany({ id: validatedId.id })
 
             //Publish "CompanyDeleted" event
             await producer.connect();
@@ -25,7 +25,7 @@ module.exports = function makeDeleteCompany({companyData, Joi, producer}){
         }
     }
 
-    function validation({id}){
+    function validateData({id}){
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required()
         }).validate({id});
@@ -33,9 +33,8 @@ module.exports = function makeDeleteCompany({companyData, Joi, producer}){
         if (error) {
             throw new error.details[0].message;
         }
-        else {
-            return value;
-        }
-
+        
+        return value;
+        
     }
 }

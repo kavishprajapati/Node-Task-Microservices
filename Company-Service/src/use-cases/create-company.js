@@ -1,19 +1,19 @@
-module.exports = function makeCreateCompany({ companyData, Joi, internalCallCreateEmployee }) {
+module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee }) {
     return async function createCompany({ name, city, address, contact }) {
 
         try {
-            const validatedData = validation({ name, city, address, contact });
-            const companydata =  await companyData({ name: validatedData.name, city: validatedData.city, address: validatedData.address, contact: validatedData.contact })
-            const companyid = companydata.id
+            const validatedData = validateData({ name, city, address, contact });
+            const companyData =  await companyTable.createCompany({ name: validatedData.name, city: validatedData.city, address: validatedData.address, contact: validatedData.contact })
+            const companyId = companyData.id
 
-            await internalCallCreateEmployee({ companyid })
+            await createEmployee({ companyId })
 
         }
         catch (err) {
             throw err;
         }
     }
-    function validation({ name, city, address, contact }) {
+    function validateData({ name, city, address, contact }) {
 
         const { error, value } = Joi.object({
             name: Joi.string().min(3).max(20).required(),
@@ -25,8 +25,10 @@ module.exports = function makeCreateCompany({ companyData, Joi, internalCallCrea
         if (error) {
             throw new error.details[0].message;
         }
-        else {
-            return value;
-        }
+        
+        return value;
+        
     }
 }
+
+

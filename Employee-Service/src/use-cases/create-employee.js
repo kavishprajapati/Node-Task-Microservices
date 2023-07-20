@@ -1,15 +1,15 @@
-module.exports = function makeCreateEmployee({ getCompanyId, EmployeeData, Joi, createRole, assignRole }) {
+module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi, createRole, assignRole }) {
     return async function createEmployee({cmpId ,companyName,  empName, contact, role }) {
 
         try {
-            const validatedData = validation({ cmpId, companyName, empName, contact, role });
+            const validatedData = validateData({ cmpId, companyName, empName, contact, role });
 
             if(validatedData.companyName){
                 const companyID = await getCompanyId({ companyName }) //this is internal call which fetch company id from company
-                await EmployeeData({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
+                await EmployeeTable.createEmployee({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
             }
             else{
-                const empData = await EmployeeData({ cmpId: cmpId, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role }) 
+                const empData = await EmployeeTable.createEmployee({ cmpId: cmpId, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role }) 
 
                 const permission = {
                     "employee": {
@@ -42,11 +42,9 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeData, Joi, 
             throw err;
         }
 
-    
-
     }
 
-    function validation({ cmpId, companyName, empName, contact, role }) {
+    function validateData({ cmpId, companyName, empName, contact, role }) {
 
         const { error, value } = Joi.object({
             cmpId: Joi.string().uuid().optional(), 
@@ -59,8 +57,7 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeData, Joi, 
         if (error) {
             throw new Error(error.details[0].message);
         }
-        else {
-            return value;
-        }
+       
+        return value; 
     }
 }

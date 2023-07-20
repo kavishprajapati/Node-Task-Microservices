@@ -1,9 +1,9 @@
-module.exports = function makeDeleteUser({ userData, Joi }){
+module.exports = function makeDeleteUser({ userTable, Joi }){
     return async function deleteUser({ id }){
 
         try{
-            const validatedId = validation({ id })
-            await userData({ id: validatedId.id })
+            const validatedId = validateData({ id })
+            await userTable.deleteUser({ id: validatedId.id })
         }
         catch(err){
             throw err
@@ -12,7 +12,7 @@ module.exports = function makeDeleteUser({ userData, Joi }){
     }
 
 
-    function validation({ id }){
+    function validateData({ id }){
         const schema = Joi.object({
             id: Joi.string().uuid().required()
         })  
@@ -21,8 +21,8 @@ module.exports = function makeDeleteUser({ userData, Joi }){
 
         if (error) {
             throw new Error(error.details[0].message);
-          } else {
-            return value;
           }
+
+            return value;
     }
 }

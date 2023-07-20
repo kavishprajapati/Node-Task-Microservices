@@ -1,9 +1,9 @@
-module.exports = function makeDeleteRole({ EmployeeData, Joi }){
+module.exports = function makeDeleteRole({ EmployeeTable, Joi }){
     return async function deleteRole({ id }){
 
         try{
-            const validatedId = validation({ id })
-            await EmployeeData({ id: validatedId.id })
+            const validatedId = validateData({ id })
+            await EmployeeTable.deleteRole({ id: validatedId.id })
         }
         catch(err){
             throw err
@@ -11,7 +11,7 @@ module.exports = function makeDeleteRole({ EmployeeData, Joi }){
 
     }
 
-    function validation({ id }){
+    function validateData({ id }){
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required()
         }).validate({id})
@@ -19,9 +19,8 @@ module.exports = function makeDeleteRole({ EmployeeData, Joi }){
         if (error){
             throw new error.details[0].message;
         }
-        else{
-            return value
-        }
+
+        return value
     }
 }
 

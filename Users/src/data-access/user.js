@@ -1,4 +1,4 @@
-function makeUserDb({ cockroach, bcrypt }) {
+function makeUser({ cockroach, bcrypt }) {
     return Object.freeze({
         createUser,
         getAllUser,
@@ -101,9 +101,9 @@ function makeUserDb({ cockroach, bcrypt }) {
         }
     }
 
-    async function storeUserjwtToken({ userid, token }) {
+    async function storeUserjwtToken({ userId, token }) {
         try {
-            const storeToken = await cockroach.query(`INSERT INTO usertoken_table (userid, jwttoken) VALUES('${userid}', '${token}')`)
+            const storeToken = await cockroach.query(`INSERT INTO usertoken_table (userid, jwttoken) VALUES('${userId}', '${token}')`)
         }
 
         catch (err) {
@@ -116,4 +116,4 @@ function makeUserDb({ cockroach, bcrypt }) {
 }
 
 
-module.exports = makeUserDb
+module.exports = makeUser

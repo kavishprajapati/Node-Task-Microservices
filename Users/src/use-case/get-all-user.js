@@ -1,8 +1,7 @@
-module.exports = function makeGetAllUser({ userData }){
+module.exports = function makeGetAllUser({ userTable }){
     return async function getAllUser(){
         try{
-            const userdata = await userData()
-            return userdata
+            return await userTable.getAllUser()
         }
         catch(err){
             throw err

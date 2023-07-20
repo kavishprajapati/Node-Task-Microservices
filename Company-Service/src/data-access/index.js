@@ -19,8 +19,8 @@ const cockroach = new Pool({
 })
 
 
-const makeCompanyDb = require('./companyDb')
-const companyTable = makeCompanyDb({cockroach})
+const makeCompany = require('./company')
+const companyTable = makeCompany({cockroach})
 
 
-module.exports = {companyTable}
+module.exports = { companyTable }
