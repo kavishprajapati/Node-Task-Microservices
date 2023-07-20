@@ -27,9 +27,8 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
                 }
 
                 if(empData.role == 'admin'){
-                    const result =  await createRole({roleName: empData.role, companyid: empData.cmpid, permission: permission })
                     
-
+                    const result =  await createRole({roleName: empData.role, companyid: empData.cmpid, permission: permission })
 
                     await assignRole({ roleid: result.roleid, employeeid: empData.empid })
                 }

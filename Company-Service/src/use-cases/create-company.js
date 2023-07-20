@@ -13,6 +13,7 @@ module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee 
             throw err;
         }
     }
+    
     function validateData({ name, city, address, contact }) {
 
         const { error, value } = Joi.object({
