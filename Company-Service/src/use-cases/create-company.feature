@@ -1,4 +1,4 @@
-TryFeature: Create New Company.
+Feature: Create New Company.
 
     Scenario Outline: Try to create new company with invalid details, then it will throw error.
         Given Company details name:"<name>", city:"<city>", address:"<address>", contact:"<contact>" to create company
