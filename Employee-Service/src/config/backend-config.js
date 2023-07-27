@@ -11,11 +11,11 @@ const config = {
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 2000,
         dialect: 'postgres',
-        ssl: {
-            ca: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/ca.crt').toString(),
-            key: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/client.root.key').toString(),
-            crt: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/client.root.crt').toString()
-        }
+        // ssl: {
+        //     ca: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/ca.crt').toString(),
+        //     key: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/client.root.key').toString(),
+        //     crt: fs.readFileSync('/home/ad.rapidops.com/kavish.prajapati/Documents/CockroachDB/certs/client.root.crt').toString()
+        // }
     }
 }
 

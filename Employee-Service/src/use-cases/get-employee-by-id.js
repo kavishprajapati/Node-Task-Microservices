@@ -7,6 +7,7 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
         const companyId = data[0].cmpid;
   
         const companyData = await getCompanyData({ companyId });
+        console.log(companyData);
   
         const joinedData = data.map(item => {
           const { cmpid, ...rest } = item;
@@ -15,6 +16,8 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
           return { ...rest, ...companyDataWithoutId };
         });
         
+        console.log(joinedData);
+
         return joinedData
       } 
       catch (err) {

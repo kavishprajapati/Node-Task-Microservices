@@ -15,7 +15,7 @@ module.exports = function makeGetEmployeeDataByIdAction({ getEmployeeDataById })
         catch(err){
             res.status(400).json({
                 status: "Fail",
-                data: ("Fail to get Employee Data")
+                data: err
             })
         }
         
