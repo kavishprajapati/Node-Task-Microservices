@@ -18,6 +18,3 @@ module.exports = function makeGetCompanyAction({getCompany}){
         }
     }
 }
-
-
-

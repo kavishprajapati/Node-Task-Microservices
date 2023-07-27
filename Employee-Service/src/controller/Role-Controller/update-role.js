@@ -4,6 +4,7 @@ module.exports = function makeUpdateRoleAction({ updateRole }){
         try{
             const id = req.params.id
             const { roleName, permission } = req.body
+            console.log(permission);
             await updateRole({ roleName, permission, id })
             res.status(200).json({
                 status: "Success",
@@ -13,7 +14,7 @@ module.exports = function makeUpdateRoleAction({ updateRole }){
         catch(err){
             res.status(400).json({
                 status: "fail",
-                data: "fail to update data"
+                data: err
             })
         }
 

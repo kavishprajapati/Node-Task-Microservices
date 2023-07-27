@@ -12,7 +12,7 @@ module.exports = function makeDeleteAssignedRoleAction({ deleteAssignedRole }){
         catch(err){
             res.status(400).json({
                 status: "fail",
-                data: "fail to delete assigned role"
+                data: err
             })
         }
 

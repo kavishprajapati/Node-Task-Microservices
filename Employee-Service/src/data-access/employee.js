@@ -80,9 +80,9 @@ function makeEmployee({ cockroach }) {
     }
   }
 
-  async function deleteEmployeesByCompanyId({ id }) {
+  async function deleteEmployeesByCompanyId({ companyId }) {
     try{
-      const deleteEmployees = await cockroach.query(`delete from employeetable where cmpid = '${id}'`)
+      const deleteEmployees = await cockroach.query(`delete from employeetable where cmpid = '${companyId}'`)
     }
     catch(err){
       throw err

@@ -23,9 +23,15 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
 
                 const token = jwt.sign({ userid: userId }, 'kavish-token', { expiresIn: '24h' });
                 await userTable.storeUserjwtToken({ userId, token })
+
                 console.log("Token stored");
+
                 await sendMail()
+
                 console.log("Mail sent successfully");
+
+                return "User loggedIn successfully"
+
             } else {
                 // Passwords do not match, user authentication failed
                 console.log("User authentication failed");
@@ -33,7 +39,8 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
 
 
         } catch (err) {
-            throw err;
+            console.log(err.message);
+            throw err.message
         }
     }
 
@@ -42,10 +49,9 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         const schema = Joi.object({
-            username: Joi.string(),
-            password: Joi.string()
+            username: Joi.string().required(),
+            password: Joi.string().required()
                 .pattern(passwordRegex, 'password')
-                .required()
                 .messages({
                     'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.'
                 })
@@ -53,7 +59,7 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
 
         const { error, value } = schema.validate({ username, password });
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         }
 
         return value;

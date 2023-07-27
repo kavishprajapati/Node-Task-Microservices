@@ -4,9 +4,11 @@ module.exports = function makedeleteAssignedRole({ EmployeeTable, Joi }){
         try{
             const validatedId = validateData({ id })
             await EmployeeTable.deleteAssignedrole({ id: validatedId.id })
+        
+            return "assigned role deleted successfully"; //this is used in test-cases
         }
         catch(err){
-            throw err
+            throw err.message
         }
 
     }
@@ -17,7 +19,7 @@ module.exports = function makedeleteAssignedRole({ EmployeeTable, Joi }){
         }).validate({id})
 
         if (error){
-            throw new error.details[0].message;
+            throw error.details[0]
         }
 
         return value

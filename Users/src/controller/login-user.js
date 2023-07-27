@@ -12,7 +12,7 @@ module.exports = function makeUserLoginAction({ userLogin }){
         catch(err){
             res.status(400).json({
                 status: "Fail",
-                data: "User Authentication Failed"
+                data: err
             })
         }
     }

@@ -2,11 +2,18 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
     return async function updateUser({ updateUserData, id }){
 
         try{
+
+            if( Object.keys(updateUserData).length === 0 ){
+                throw new Error("Update data cannot be empty");
+            }
+
             const validatedData = validateData({ updateUserData, id })
             await userTable.updateUser({ ...validatedData, id })
+
+            return "user data updated successfully";
         }
         catch(err){
-            throw err
+            throw err.message;
         }
 
     }
@@ -31,7 +38,7 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
         const { error, value } = schema.validate({ updateUserData, id });
 
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         }
             
         return value;

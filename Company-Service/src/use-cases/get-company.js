@@ -2,10 +2,17 @@ module.exports = function makeGetCompany({ companyTable, Joi }) {
     return async function getCompany({ id }) {
         try {
             const validatedId = validateData({ id })
-            return await companyTable.getCompanyData({ id: validatedId.id })
+            const companyData =  await companyTable.getCompanyData({ id: validatedId.id })
+
+            if(!companyData){
+                throw new Error("No data is present with this id")
+            }
+
+            return companyData
+
         }
         catch (err) {
-            throw err
+            throw err.message
         }
     }
 
@@ -15,11 +22,10 @@ module.exports = function makeGetCompany({ companyTable, Joi }) {
         }).validate({ id });
 
         if (error) {
-            throw new error.details[0].message;
+            throw error.details[0];
         }
        
         return value;
-       
     }
 }
 

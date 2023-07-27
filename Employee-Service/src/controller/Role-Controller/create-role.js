@@ -4,7 +4,7 @@ module.exports = function makeCreateRoleAction({ createRole }){
         try{
             const companyid = req.params.id
             const {roleName, permission} = req.body
-            const newRole = await createRole({ roleName, companyid ,permission })
+            await createRole({ roleName, companyid ,permission })
             
             res.status(201).json({
                 status: "Success",
@@ -12,13 +12,11 @@ module.exports = function makeCreateRoleAction({ createRole }){
             })
         }
         catch(err){
-            console.log(err);
             res.status(400).json({
                 status: "fail",
-                data: "Not able to create new role"
+                data: err
             })
         }
 
     }
 }
-

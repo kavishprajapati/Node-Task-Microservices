@@ -18,7 +18,10 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
         return joinedData
       } 
       catch (err) {
-        throw err;
+        console.log("---------");
+        console.log(err);
+        console.log("----------");
+        throw err.message
       }
     }
   
@@ -28,7 +31,7 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
       }).validate({ id });
   
       if (error) {
-        throw new Error(error.details[0].message);
+        throw error.details[0]
       } 
       
       return value;

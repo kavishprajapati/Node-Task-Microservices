@@ -1,19 +1,21 @@
 module.exports = function makeCreateUser({ userTable, Joi }){
-    return async function createUser({ username, useremail, password }){
-
-        try{
+  return async function createUser({ username, useremail, password }){
+    
+    try{
+            console.log(username, useremail, password);
             const validatedData = validateData({ username, useremail, password })
-            const userData = await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
+            await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
+
+            return "New User Successfully Created"; //this is i have used for test-case purpose
         }
         catch(err){
-            throw err
+            throw err.message
         }
 
     } 
 
     function validateData({ username, useremail, password }) {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
         const schema = Joi.object({
           username: Joi.string().required(),
           useremail: Joi.string().email().required(),
@@ -26,13 +28,12 @@ module.exports = function makeCreateUser({ userTable, Joi }){
         });
       
         const { error, value } = schema.validate({ username, useremail, password });
+
         if (error) {
-          throw new Error(error.details[0].message);
+          throw error.details[0];
         }
       
         return value;
-        
       }          
- 
 }
 

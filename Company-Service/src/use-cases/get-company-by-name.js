@@ -1,11 +1,20 @@
 module.exports = function makeGetCompanyByName({ companyTable, Joi }){
     return async function getCompanyByName({companyname}){
         try{
+            
             const validatedName = validateData({ companyname })
-            return await companyTable.getCompanyByName({ companyname: validatedName.companyname })
+            const companyData =  await companyTable.getCompanyByName({ companyname: validatedName.companyname })
+          
+            if(!companyData){
+                throw new Error("No company data found")
+            }
 
-        }catch(err){
-            throw err
+            return companyData
+
+        }
+        catch(err){
+            console.log(err.message);
+            throw err.message;
         }
     }
 
@@ -16,7 +25,7 @@ module.exports = function makeGetCompanyByName({ companyTable, Joi }){
         }).validate({ companyname })
 
         if (error) {
-            throw  error.details[0].message;
+            throw error.details[0];
         }
         
         return value;

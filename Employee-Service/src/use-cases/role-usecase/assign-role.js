@@ -3,12 +3,13 @@ module.exports = function makeAssignRole({ EmployeeTable, Joi }){
 
         try{
 
-            const validatedId = await validateData({ roleid, employeeid })
-            const employeeData =  await EmployeeTable.assignRole({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
+            const validatedId = validateData({ roleid, employeeid })
+            await EmployeeTable.assignRole({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
             
+            return "Role is assigned Successfully to an employee"; //this is am using for test-cases
         }
         catch(err){
-            throw err
+            throw err.message
         }
     }
 
@@ -18,7 +19,7 @@ module.exports = function makeAssignRole({ EmployeeTable, Joi }){
             employeeid: Joi.string().uuid().required()
         }).validate({ roleid, employeeid });
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         }
         
         return value; 

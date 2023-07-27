@@ -2,11 +2,14 @@ module.exports = function makeDeleteUser({ userTable, Joi }){
     return async function deleteUser({ id }){
 
         try{
+            console.log(id);
             const validatedId = validateData({ id })
             await userTable.deleteUser({ id: validatedId.id })
+
+            return "user deleted successfully";
         }
         catch(err){
-            throw err
+            throw err.message
         }
 
     }
@@ -20,7 +23,7 @@ module.exports = function makeDeleteUser({ userTable, Joi }){
         const { error, value } = schema.validate({ id })
 
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
           }
 
             return value;

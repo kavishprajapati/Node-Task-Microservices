@@ -6,7 +6,7 @@ module.exports = function makeGetUserDataById({ userTable, Joi }) {
             return await userTable.getUserDataById({ id: validatedId.id })
         }
         catch (err) {
-            throw err
+            throw err.message
         }
 
     }
@@ -19,7 +19,7 @@ module.exports = function makeGetUserDataById({ userTable, Joi }) {
         const { error, value } = schema.validate({ id })
 
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         }
 
         return value;

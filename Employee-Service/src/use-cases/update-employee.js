@@ -1,12 +1,19 @@
 module.exports = function makeUpdateEmployee({ EmployeeTable, Joi }) {
-    return async function updateemployee(updateData, id) {
+    return async function updateemployee({updateData, id}) {
 
-        try {
+        try {    
+
+            if( Object.keys(updateData).length === 0 ){
+                throw new Error("Update data cannot be empty");
+            }
+
             const validatedData = await validateData({ updateData, id })
             await EmployeeTable.updateEmployee({ ...validatedData, id })
+
+            return "Employee data updated successfully"; // this line giving return value to testcase, i have written this line which i have used to pass a test-case.
         }
         catch (err) {
-            throw err;
+            throw err.message
         }
     }
 
@@ -21,7 +28,7 @@ module.exports = function makeUpdateEmployee({ EmployeeTable, Joi }) {
         }).validate({ updateData, id })
 
         if (error) {
-            throw new error.details[0].message;
+            throw error.details[0]
         }
         
         return value;

@@ -12,11 +12,11 @@ function makeCompany({ cockroach }) {
 
         try {
             const data = await cockroach.query("select * from companytable")
-         
+
             const result = data.rows;
 
             if (!result || result.length === 0) {
-                throw new Error("No company data found")
+                return []
             }
 
             return result;
@@ -30,11 +30,11 @@ function makeCompany({ cockroach }) {
 
         try {
             const getData = await cockroach.query(`select * from companytable where id = '${id}'`)
-          
+
             const result = getData.rows;
-            
+
             if (!result || result.length === 0) {
-                throw new Error("No data is present with this id")
+                return false
             }
 
             return result;
@@ -51,8 +51,8 @@ function makeCompany({ cockroach }) {
         try {
             const createCompany = await cockroach.query(`insert into companytable (id, name, city, address, contact) values(gen_random_uuid(), '${name}', '${city}', '${address}', '${contact}')  RETURNING *`);
 
-            if(createCompany.rows.length === 0 ){
-                throw new Error("Failed to create company")
+            if (createCompany.rows.length === 0) {
+                return false
             }
             return createCompany.rows[0];
         }
@@ -64,6 +64,7 @@ function makeCompany({ cockroach }) {
 
     async function deleteCompany({ id }) {
         try {
+
             const deleteQuery = await cockroach.query(`delete from companytable where id = '${id}'`)
         }
         catch (err) {
@@ -80,7 +81,7 @@ function makeCompany({ cockroach }) {
             });
 
             const updateQuery = await cockroach.query(`UPDATE companytable SET ${update.join(',')} WHERE id = '${id}'`)
-     
+
         }
         catch (err) {
             throw err
@@ -90,14 +91,12 @@ function makeCompany({ cockroach }) {
 
     async function getCompanyByName({ companyname }) {
         try {
-            
             const dataByNameQuery = await cockroach.query(`select * from companytable where name = '${companyname}'`)
-  
 
             const result = dataByNameQuery.rows;
 
             if (!result || result.length === 0) {
-                throw new Error("No company data found")
+                return false
             }
 
             return result;
@@ -108,7 +107,5 @@ function makeCompany({ cockroach }) {
     }
 
 }
-
-
 
 module.exports = makeCompany

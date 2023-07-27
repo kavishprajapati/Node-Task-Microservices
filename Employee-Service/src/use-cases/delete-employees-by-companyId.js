@@ -1,12 +1,15 @@
 module.exports = function makeDeleteEmployeesByCompanyId({ EmployeeTable, Joi }){
-    return async function deleteEmployeesByCompanyId({companyId}){
+    return async function deleteEmployeesByCompanyId({ companyId }){
 
         try{
             const validatedId = validateData ({ companyId });
-            await EmployeeTable.deleteEmployeesByCompanyId( {id: validatedId.companyId} ) 
+            await EmployeeTable.deleteEmployeesByCompanyId( {companyId: validatedId.companyId} ) 
+
+            return "Employees deleted successfully";
         }
         catch(err){
-            throw err
+            console.log(err);
+            throw err.message
         }
     }
 
@@ -16,7 +19,7 @@ module.exports = function makeDeleteEmployeesByCompanyId({ EmployeeTable, Joi })
         }).validate({companyId})
 
         if (error){
-            throw new error.details[0].message;
+            throw error.details[0]
         }
     
         return value 

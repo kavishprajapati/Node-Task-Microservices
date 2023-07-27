@@ -4,8 +4,8 @@ module.exports = function makeCreateEmployee ({ axios }){
         try{
             const employeeCreated = axios.post('http://localhost:9092/Employee', {
                 cmpId: companyId,
-                empName: "kahan",
-                contact: 8989898989,
+                empName: "Dipti",
+                contact: 7878787878,
                 role: "admin"
             })
         }

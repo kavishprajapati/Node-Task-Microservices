@@ -8,9 +8,8 @@ module.exports = function makeGetByIdAssignedRole({ EmployeeTable, Joi }){
 
         }
         catch(err){
-            throw err
-        }
-         
+            throw err.message
+        }   
     }
 
     function validateData({ id }){
@@ -18,7 +17,7 @@ module.exports = function makeGetByIdAssignedRole({ EmployeeTable, Joi }){
             id: Joi.string().uuid().required()
         }).validate({ id })
         if (error){
-            throw new Error(error.details[0].message)
+            throw error.details[0]
         }
 
         return value;

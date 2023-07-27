@@ -4,7 +4,7 @@ module.exports = function makeUpdateEmployeeAction ({ updateEmployee }) {
         try{
             const id = req.params.id;
             const updateData = req.body;
-            await updateEmployee( updateData, id )
+            await updateEmployee({ updateData, id })
             res.status(200).json({
                 status: "Success",
                 data: "Employee Data Updated Successfully"

@@ -3,9 +3,12 @@ module.exports = function makeUpdateRole({ EmployeeTable, Joi }) {
         try {
             const validatedData = await validateData({ roleName, permission, id });
             await EmployeeTable.updateRole({ roleName: validatedData.roleName, permission: validatedData.permission, id: validatedData.id })
+
+            return "Role is updated";
         } 
         catch (err) {
-            throw err;
+            console.log(err);
+            throw err.message
         }
     };
 
@@ -17,7 +20,7 @@ module.exports = function makeUpdateRole({ EmployeeTable, Joi }) {
         }).validate({ roleName, permission, id });
 
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         } 
         
         return value;

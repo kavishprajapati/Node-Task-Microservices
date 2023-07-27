@@ -37,8 +37,7 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
 
         }
         catch (err) {
-            console.log(err);
-            throw err;
+            throw err.message
         }
 
     }
@@ -54,7 +53,7 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
         }).validate({ cmpId, companyName, empName, contact, role });
 
         if (error) {
-            throw new Error(error.details[0].message);
+            throw error.details[0]
         }
        
         return value; 

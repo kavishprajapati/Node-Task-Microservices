@@ -19,9 +19,12 @@ module.exports = function makeDeleteCompany({companyTable, Joi, producer}){
 
             //Disconnect the kafka producer
             // await producer.disconnect();
+
+
+            return { message: "Company deleted successfully" } //this is i have written because i am using this message in test-cases. //this is not for controller file.
         }
         catch(err){
-            throw err
+            throw err.message;
         }
     }
 
@@ -31,7 +34,7 @@ module.exports = function makeDeleteCompany({companyTable, Joi, producer}){
         }).validate({id});
 
         if (error) {
-            throw new error.details[0].message;
+            throw error.details[0]
         }
         
         return value;
