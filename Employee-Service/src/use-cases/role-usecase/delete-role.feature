@@ -1,8 +1,8 @@
-Feature: Delete Role 
+Feature: Use-case delete role 
 
     Scenario Outline: Try to delete role with invalid id, then it will throw error.
         Given Role details id:'<id>' to delete role 
-        When  Try to delete role with invalid id
+        When  Try to delete role
         Then  It will throw error with message: '<message>' while deleting role
 
         Examples:
@@ -10,8 +10,8 @@ Feature: Delete Role
             | 123 | "id" must be a valid GUID |
 
     Scenario Outline: Try to delete role with valid id.        
-        Given Role details id:'<id>' to delete role successfully
-        When  Try to delete role with valid id
+        Given Role details id:'<id>' to delete role
+        When  Try to delete role
         Then  It will delete role with message: '<message>'
 
         Examples:

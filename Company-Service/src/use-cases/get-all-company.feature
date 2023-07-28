@@ -1,6 +1,6 @@
-Feature: Get All Company
+Feature: Use-case get all company
 
-    Scenario Outline: Get All Company Successfully
+    Scenario Outline: get all company Successfully
         When I request to get all companies 
         Then I should get all companies 
 

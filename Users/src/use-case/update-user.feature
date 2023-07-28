@@ -1,9 +1,9 @@
-Feature: Update user data
+Feature: Use-case to update user data
 
     Scenario Outline: Try to update user data with invalid data, then it will throw error.
         Given user details updateUserData:'<updateUserData>', id:'<id>' to update user
         When Try to update user data
-        Then It will throw error with message: '<message>' while updating a company details
+        Then It will throw error with message: '<message>' while updating a user details
 
         Examples:
             | id  | updateUserData                                           | message                     |
@@ -11,10 +11,10 @@ Feature: Update user data
             | 123 | {"username":"kavish","useremail":"kavish@gmail.com"}     | "id" must be a valid GUID   |
 
 
-    Scenario Outline: Try to update user data with valid data, then it will throw error.
-        Given user details updateUserData:'<updateUserData>', id:'<id>' to update user successfully
-        When  Try to update user data successfully
-        Then  It will update company data with message:'<message>' 
+    Scenario Outline: Try to update user data with valid data.
+        Given user details updateUserData:'<updateUserData>', id:'<id>' to update user
+        When  Try to update user data
+        Then  It will update user data with message:'<message>'
 
         Examples:
             | id                                   | updateUserData                                       | message                        |

@@ -1,8 +1,8 @@
-Feature: Delete Assigned Role 
+Feature: Use-case delete assigned role 
 
     Scenario Outline: Try to delete assgined role with invalid id, then it will throw error.
-        Given Role details id:'<id>' to delete assgined role 
-        When  Try to delete assigned role with invalid id
+        Given Role details id:'<id>' to delete assgined role
+        When  Try to delete assigned role
         Then  It will throw error with message: '<message>' while deleting assgined role
 
         Examples:
@@ -10,8 +10,8 @@ Feature: Delete Assigned Role
             | 123 | "id" must be a valid GUID |
 
     Scenario Outline: Try to delete assgined role with valid id.        
-        Given Role details id:'<id>' to delete assgined role successfully
-        When  Try to delete assigned role with valid id
+        Given Role details id:'<id>' to delete assgined role
+        When  Try to delete assigned role
         Then  It will delete assigned role with message: '<message>'
 
         Examples:

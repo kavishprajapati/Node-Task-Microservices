@@ -1,9 +1,9 @@
-Feature: Create New User.
+Feature: Use-Case to create new user
 
     Scenario Outline: Try to create new user with invalid details, then it will throw error.
         Given User details username:'<username>', useremail:'<useremail>', password:'<password>' to create user
         When Try to create user
-        Then It will throw error with message: '<message>' while create new user
+        Then It will throw error with message: '<message>' while create new user with invalid details
 
         Examples:
             | username | useremail       | password  | message                                                         |
@@ -14,10 +14,10 @@ Feature: Create New User.
             | Amit     |  Amit@gmail.com | Abc       | "password" with value "Abc" fails to match the password pattern |
         
 
-    Scenario Outline: Try to create new user with valid details, then it will throw error.
-        Given User details username:'<username>', useremail:'<useremail>', password:'<password>' to create user Successfully
-        When Try to create user with valid data
-        Then It will throw error with message: '<message>' while create new user Successfully
+    Scenario Outline: Try to create new user with valid details.
+        Given User details username:'<username>', useremail:'<useremail>', password:'<password>' to create user
+        When Try to create user
+        Then It will give message: '<message>' while create new user Successfully
 
         Examples:
             | username | useremail      | password   | message                       |

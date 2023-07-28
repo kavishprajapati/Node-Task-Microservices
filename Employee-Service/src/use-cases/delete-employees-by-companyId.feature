@@ -1,8 +1,8 @@
-Feature: Delete Employee by Company Id
+Feature: Use-case delete employee by company id
 
     Scenario Outline: Try to delete employees with invalid company id, then it will throw error.
-        Given Employees details companyId:'<companyId>' to delete employees 
-        When  Try to delete employees with invalid companyId
+        Given Employees details companyId:'<companyId>' to delete employees
+        When  Try to delete employees
         Then  It will throw error with message: '<message>' while deleting employees data
 
         Examples:
@@ -10,9 +10,9 @@ Feature: Delete Employee by Company Id
             | 123       | "companyId" must be a valid GUID |
 
     
-    Scenario Outline: Try to delete employees with valid company id, then it will throw error.
-        Given Employees details companyId:'<companyId>' to delete employees successfully
-        When Try to delete employees with valid companyId
+    Scenario Outline: Try to delete employees with valid company id.
+        Given Employees details companyId:'<companyId>' to delete employees
+        When Try to delete employees
         Then It will delete employees with message: '<message>'
 
         Examples:

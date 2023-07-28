@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, After, AfterAll } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi');
@@ -29,7 +29,16 @@ const jwt = {
 
 const sendMail = sandbox.stub();
 
-//for invalid scenario
+After(() => {
+    this.username = undefined;
+    this.password = undefined;
+    this.result = undefined;
+    this.error = undefined;
+    sandbox.resetHistory();
+})
+
+AfterAll(() => sandbox.restore() )
+
 Given('User credentails username:{string}, password:{string} to login', (username, password) => {
     this.username = username || undefined;
     this.password = password || undefined;
@@ -37,7 +46,7 @@ Given('User credentails username:{string}, password:{string} to login', (usernam
 
 When('User try to login', async () => {
     const userLogin = makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail });
-
+    
     try {
         this.result = await userLogin({ username: this.username, password: this.password });
     }
@@ -46,28 +55,14 @@ When('User try to login', async () => {
     }
 })
 
-Then('It will throw error with message: {string} while user trying to login', (message) => {
+//for invalid scenario
+Then('It will throw error with message: {string} while user login', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
-
 //for valid scenario
-Given('User credentails username:{string}, password:{string} to login successfully', (username, password) => {
-    this.username = username || undefined;
-    this.password = password || undefined;
-})
-
-When('User try to login with valid credentails', async() => {
-    const userLogin = makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail });
-
-    try {
-        this.result = await userLogin({ username: this.username, password: this.password });
-    }
-    catch (err) {
-        this.error = err;
-    }
-})
-
 Then('User will login successfully with message: {string}', (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

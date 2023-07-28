@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, After, AfterAll } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi');
@@ -10,27 +10,48 @@ const EmployeeTable = {
     createRole: () => {}
 }
 
-const createRoleStub = sandbox.stub(EmployeeTable, 'createRole')
+let createRoleStub;
 
-createRoleStub.callsFake((args) => {
-    expect(args).deep.equal({
-        roleName: args.roleName,
-        companyid: args.companyid,
-        permission: args.permission
+BeforeAll(() => {
+    createRoleStub = sandbox.stub(EmployeeTable, 'createRole')
+})
+
+Before(() => {
+    createRoleStub.callsFake((args) => {
+        console.log({args});
+        expect(args).deep.equal({
+            roleName: args.roleName,
+            companyid: args.companyid,
+            permission: args.permission
+        })
+        return "New Role Is Created"
     })
-    return "New Role Is Created"
 })
 
-//This is for invalid scenario
-Given('Role details companyid:{string}, roleName:{string}, permission:{string} to create role', (companyid, roleName, permission) => {
-    this.companyid = companyid || undefined,
-    this.roleName = roleName || undefined,
-    this.permission = permission || undefined
+After(() => {
+    this.companyid = undefined;
+    this.roleName = undefined;
+    this.permission = undefined;
+    this.result = undefined;
+    this.error = undefined;
+    sandbox.resetHistory();
 })
 
-When('Try to create Role with invalid details', async() => {
+AfterAll(() => sandbox.restore());
+
+Given('Role details companyid:{string}, roleName:{string}, permission:{string} to create role', async (companyid, roleName, permission) => {
+    console.log('11111111111111111');
+    console.log({permission});
+    console.log({companyid});
+    console.log({roleName});  
+    this.companyid = companyid || undefined;
+    this.roleName = roleName || undefined;
+    this.permission = JSON.parse(permission) || undefined;
+})
+
+When('Try to create Role', async() => {
     const createRole = makeCreateRole({ EmployeeTable, Joi })
-
+    
     try{
         this.result = await createRole({
             roleName: this.roleName,
@@ -39,38 +60,19 @@ When('Try to create Role with invalid details', async() => {
         })
     }
     catch(err){
+        this.result = undefined;
         this.error = err
     }
 })
 
+//This is for invalid scenario
 Then('It will throw error with message: {string} while creating new role', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
 //this is for valid scenario
-Given('Role details companyid:{string}, roleName:{string}, permission:{string} to create role Successfully', (companyid, roleName, permission) => {
-    this.companyid = companyid || undefined,
-    this.roleName = roleName || undefined,
-    this.permission = JSON.parse(permission) || undefined
-})
-
-When('Try to create role  with valid details', async() => {
-    const createRole = makeCreateRole({ EmployeeTable, Joi })
-
-    try{
-        this.result = await createRole({
-            roleName: this.roleName,
-            companyid: this.companyid,
-            permission: this.permission
-        })
-    }
-    catch(err){
-        console.log(err);
-        this.error = err
-    }
-})
-
 Then('It will create role Successfully with message:{string}', (message) => {
-    console.log(this.result);
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

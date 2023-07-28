@@ -1,22 +1,19 @@
-module.exports = function makeCreateRole({ EmployeeTable, Joi }){
-    return async function createRole({ roleName, companyid, permission }){
+module.exports = function makeCreateRole({ EmployeeTable, Joi }) {
+    return async function createRole({ roleName, companyid, permission }) {
 
-        try{
-
-            console.log(typeof permission);
-
+        try {
             const validatedData = validateData({ roleName, companyid, permission });
             const employeeData = await EmployeeTable.createRole({ roleName: validatedData.roleName, companyid: validatedData.companyid, permission: validatedData.permission })
             return employeeData
         }
-        catch(err){
+        catch (err) {
             throw err.message
         }
     }
 
     function validateData({ roleName, companyid, permission }) {
 
-        const {error, value} = Joi.object({
+        const { error, value } = Joi.object({
             companyid: Joi.string().uuid().required(),
             roleName: Joi.string().min(2).max(20).required(),
             permission: Joi.object().required().unknown(true)
@@ -26,9 +23,7 @@ module.exports = function makeCreateRole({ EmployeeTable, Joi }){
         if (error) {
             throw error.details[0]
         }
-    
+
         return value;
     }
 }
-
-

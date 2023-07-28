@@ -1,6 +1,6 @@
-Feature: Get All Assigned Role
+Feature: Use-case get all assigned role
 
-    Scenario Outline: Get All assigned Role
+    Scenario Outline: get all assigned role
         When I request to get all Assigned Role
         Then I should get all Assigned Role
 

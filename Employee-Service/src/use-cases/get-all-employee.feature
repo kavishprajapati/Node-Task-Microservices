@@ -1,8 +1,8 @@
-Feature: Get All Employees
+Feature: Use-case to get all employees
 
-    Scenario Outline: Get All Employees Successfully
+    Scenario Outline: get all employees Successfully
         When I request to get all Employees
-        Then I should get all Employees with message: '<message>'
+        Then I should get all Employees with message: "<message>"
 
         Examples:
             | message                                                                                                                                                           |

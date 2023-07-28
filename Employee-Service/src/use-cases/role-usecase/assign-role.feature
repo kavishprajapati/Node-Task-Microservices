@@ -1,4 +1,4 @@
-Feature: Assign Role to an Employee
+Feature: Use-Case assign role to an employee
 
     Scenario Outline: Try to assign role to an employee with invalid details, then it will throw error.
         Given Assign role details roleid:'<roleid>', employeeid:'<employeeid>' to assign role to employee
@@ -14,8 +14,8 @@ Feature: Assign Role to an Employee
 
 
     Scenario Outline: Try to assign role to an employee with valid details, then it will throw error.
-        Given Assign role details roleid:'<roleid>', employeeid:'<employeeid>' to assign role to employee Successfully
-        When  Try to asign role to an employee with valid details
+        Given Assign role details roleid:'<roleid>', employeeid:'<employeeid>' to assign role to employee
+        When  Try to assign role to employee
         Then  It will assign role to an employee with message:'<message>'
 
         Examples:

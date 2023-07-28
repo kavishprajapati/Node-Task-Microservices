@@ -1,6 +1,6 @@
-Feature: Get All Role
+Feature: Use-case get all role
 
-    Scenario Outline: Get All Role
+    Scenario Outline: get all role
         When I request to get all Role
         Then I should get all Role
 

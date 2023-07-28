@@ -1,8 +1,8 @@
-Feature: Update Employee Data
+Feature: Use-case update employee data
 
     Scenario Outline: Try to update employee data with invalid data, then it will throw error.
         Given Employee details updateData:'<updateData>', id:'<id>' to update employee
-        When Try to update employee data with invalid data
+        When Try to update employee data
         Then It will throw error with message: '<message>' while updating a employee details
 
         Examples:
@@ -12,8 +12,8 @@ Feature: Update Employee Data
 
     
     Scenario Outline: Try to update employee data with valid data
-        Given Employee details updateData:'<updateData>', id:'<id>' to update employee successfully
-        When Try to update employee data with valid data
+        Given Employee details updateData:'<updateData>', id:'<id>' to update employee
+        When Try to update employee data
         Then It will update employee data with message:'<message>'
             
         Examples:

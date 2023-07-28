@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, AfterAll, After } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi');
@@ -10,16 +10,31 @@ const userTable = {
     updateUser: () => { }
 }
 
-const updateUserStub = sandbox.stub(userTable, 'updateUser')
+let updateUserStub;
 
-updateUserStub.callsFake((args)=>{
-    expect(args).deep.equal({
-        updateUserData: args.updateUserData,
-        id: args.id
+BeforeAll(() => {
+    updateUserStub = sandbox.stub(userTable, 'updateUser')
+})
+
+Before(() => {
+    updateUserStub.callsFake((args)=>{
+        expect(args).deep.equal({
+            updateUserData: args.updateUserData,
+            id: args.id
+        })
     })
 })
 
-//first scenario with invalid data
+After(() => {
+    this.updateUserData = undefined;
+    this.id = undefined;
+    this.error = undefined;
+    this.result = undefined;
+    sandbox.resetHistory();
+})
+
+AfterAll(() => sandbox.restore());
+
 Given('user details updateUserData:{string}, id:{string} to update user', (updateUserData, id) => {
     this.updateUserData = JSON.parse(updateUserData) || undefined,
     this.id = id || undefined
@@ -27,7 +42,7 @@ Given('user details updateUserData:{string}, id:{string} to update user', (updat
 
 When('Try to update user data', async() => {
     const updateUser = makeUpdateUser({ userTable, Joi })
-
+    
     try{
         this.result = await updateUser({
             updateUserData: this.updateUserData,
@@ -35,35 +50,19 @@ When('Try to update user data', async() => {
         })
     }
     catch(err){
+        this.result = undefined;
         this.error = err
     }
 })
 
-Then('It will throw error with message: {string} while updating a company details', (message) => {
+//first scenario with invalid data
+Then('It will throw error with message: {string} while updating a user details', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
-
 //second scenario with valid data
-Given('user details updateUserData:{string}, id:{string} to update user successfully', (updateUserData, id) => {
-    this.updateUserData = JSON.parse(updateUserData) || undefined,
-    this.id = id || undefined
-})
-
-When('Try to update user data successfully', async() => {
-    const updateUser = makeUpdateUser({ userTable, Joi })
-
-    try{
-        this.result = await updateUser({
-            updateUserData: this.updateUserData,
-            id: this.id
-        })
-    }
-    catch(err){
-        this.error = err
-    }
-})
-
-Then('It will update company data with message:{string}', (message) => {
+Then('It will update user data with message:{string}', (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

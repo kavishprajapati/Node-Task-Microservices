@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, After, AfterAll } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi');
@@ -10,16 +10,31 @@ const EmployeeTable = {
     assignRole: () => {}
 }
 
-const assignRoleStub = sandbox.stub(EmployeeTable, 'assignRole')
+let assignRoleStub;
 
-assignRoleStub.callsFake((args) => {
-    expect(args).deep.equal({
-        roleid: args.roleid,
-        employeeid: args.employeeid
+BeforeAll(() => {
+    assignRoleStub = sandbox.stub(EmployeeTable, 'assignRole')
+})
+
+Before(() => {
+    assignRoleStub.callsFake((args) => {
+        expect(args).deep.equal({
+            roleid: args.roleid,
+            employeeid: args.employeeid
+        })
     })
 })
 
-//this is first scenario where details is invalid
+After(() => {
+    this.roleid = undefined;
+    this.employeeid = undefined;
+    this.error = undefined;
+    this.result = undefined;
+    sandbox.resetHistory();
+})
+
+AfterAll(() => sandbox.restore());
+
 Given('Assign role details roleid:{string}, employeeid:{string} to assign role to employee', (roleid, employeeid) => {
     this.roleid = roleid || undefined,
     this.employeeid = employeeid || undefined
@@ -27,7 +42,7 @@ Given('Assign role details roleid:{string}, employeeid:{string} to assign role t
 
 When('Try to assign role to employee', async() => {
     const assignRole = makeAssignRole({ EmployeeTable, Joi })
-
+    
     try{
         this.result = await assignRole({
             roleid: this.roleid,
@@ -39,30 +54,14 @@ When('Try to assign role to employee', async() => {
     }
 })
 
+//this is first scenario where details is invalid
 Then('It will throw error with message: {string} while assign role to employee', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
 // second scenario with valid details
-Given('Assign role details roleid:{string}, employeeid:{string} to assign role to employee Successfully', (roleid, employeeid) => {
-    this.roleid = roleid || undefined,
-    this.employeeid = employeeid || undefined
-})
-
-When('Try to asign role to an employee with valid details', async() => {
-    const assignRole = makeAssignRole({ EmployeeTable, Joi })
-
-    try{
-        this.result = await assignRole({
-            roleid: this.roleid,
-            employeeid: this.employeeid
-        })
-    }
-    catch(err){
-        this.error = err
-    }
-})
-
 Then('It will assign role to an employee with message:{string}', (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

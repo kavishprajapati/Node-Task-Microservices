@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, After, AfterAll } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi')
@@ -15,32 +15,51 @@ const producer = {
     connect: () => {}
 }
 
-const deleteCompanyStub = sandbox.stub(companyTable, "deleteCompany")
+let deleteCompanyStub;
+let producerStub;
+let connectStub;
 
-deleteCompanyStub.callsFake((args) => {
-    expect(args).deep.equal({
-        id: args.id
+BeforeAll(() => {
+    deleteCompanyStub = sandbox.stub(companyTable, "deleteCompany");
+    producerStub = sandbox.stub(producer, "send");
+    connectStub = sandbox.stub(producer, "connect")
+})
+
+Before(() => {
+
+    deleteCompanyStub.callsFake((args) => {
+        expect(args).deep.equal({
+            id: args.id
+        })
     })
+
+    producerStub.callsFake(() => {
+        return true;
+    })
+    
+    connectStub.callsFake(() => {
+        return true;
+    })
+
 })
 
-const producerStub = sandbox.stub(producer, "send")
-
-producerStub.callsFake((args) => {
-    return true;
+After(() => {
+    this.id = undefined;
+    this.error = undefined;
+    this.result = undefined;
+    sandbox.resetHistory();
 })
-
-const connectStub = sandbox.stub(producer, "connect")
-
-connectStub.callsFake((args) => {
-    return true;
+ 
+AfterAll(() => {
+    sandbox.restore()
 })
 
 // for invalid scenario 
-Given('company details id:{string} to delete company successfully', (id) => {
+Given('company details id:{string} to delete company', (id) => {
     this.id = id || undefined
 })
 
-When('Try to delete company with invalid data', async () => {
+When('Try to delete company', async () => {
     const deleteCompany = makeDeleteCompany({ companyTable, Joi, producer })
 
     try{
@@ -56,31 +75,14 @@ When('Try to delete company with invalid data', async () => {
 } )
 
 Then('It will throw error with message: {string} while deleting company', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 } )
 
 
 //for valid scenario
-Given('existing company details id:{string} to delete company successfully', (id) => {
-    this.id = id || undefined
-})
-
-
-When ('Try to delete company with valid id', async () => {
-    const  deleteCompany = makeDeleteCompany({ companyTable, Joi, producer })
-
-    try{
-        this.result = await deleteCompany({
-            id: this.id
-        })
-
-    }
-    catch(err){
-        this.error = err
-    }
-} )
-
 Then('It will delete company with message: {string}', (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result.message).to.be.eql(message)
 })
 

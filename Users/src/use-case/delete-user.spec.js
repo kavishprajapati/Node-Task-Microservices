@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, AfterAll, After } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi')
@@ -10,55 +10,55 @@ const userTable = {
     deleteUser: () => { }
 }
 
-const deleteUserStub = sandbox.stub(userTable, 'deleteUser')
+let deleteUserStub
 
-deleteUserStub.callsFake((args) => {
-    expect(args).deep.equal({
-        id: args.id
+BeforeAll(() => {
+    deleteUserStub = sandbox.stub(userTable, 'deleteUser')
+})
+
+Before(() => {
+    deleteUserStub.callsFake((args) => {
+        expect(args).deep.equal({
+            id: args.id
+        })
     })
 })
 
-//first scenario for invalid id
-Given('user details id:{string} to delete user', (id) => {
-    this.id = id || undefined
+After(() => {
+    this.id = undefined;
+    this.error = undefined;
+    this.result = undefined
+    sandbox.resetHistory();
 })
 
-When('Try to delete user with invalid id', async () => {
-    const deleteUser = makeDeleteUser({ userTable, Joi })
+AfterAll(() => sandbox.restore);
 
+Given('user details id:{string} to delete user', async (id) => {
+    this.id = id || undefined;
+})
+
+When('Try to delete user', async () => {
+    const deleteUser = makeDeleteUser({ userTable, Joi })
+    
     try{
         this.result = await deleteUser({
             id: this.id
         })
     }
     catch(err){
-        this.error = err
+        this.result = undefined;
+        this.error = err;
     }
 })
 
-Then('It will throw error with message: {string} while deleting company', (message) => {
+//first scenario for invalid id
+Then('It will throw error with message: {string} while deleting company',async (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
-
 //second scenario for valid id
-Given('user details id:{string} to delete user successfully', (id) => {
-    this.id = id || undefined
-})
-
-When('Try to delete user with valid id', async () => {
-    const deleteUser = makeDeleteUser({ userTable, Joi })
-
-    try{
-        this.result = await deleteUser({
-            id: this.id
-        })
-    }
-    catch(err){
-        this.error = err
-    }
-})
-
-Then('It will throw error with message: {string} while deleting user successfully', (message) => {
+Then('It will throw error with message: {string} while deleting user successfully',async (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

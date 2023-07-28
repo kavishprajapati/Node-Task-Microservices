@@ -1,8 +1,8 @@
-Feature: Update Company Data
+Feature: Use-case Update Company Data
 
     Scenario Outline: Try to update company data with invalid data, then it will throw error.
         Given Company details updateData:'<updateData>', id:'<id>' to update company
-        When Try to update company data 
+        When Try to update company data
         Then It will throw error with message: '<message>' while updating a company details
 
         Examples:
@@ -11,9 +11,9 @@ Feature: Update Company Data
             |  789  |  {"name":"kavish","city":"XYZABC"}    |  "id" must be a valid GUID    |
 
 
-    Scenario Outline: Try to update company data with valid data, then it will throw error.
-        Given Company details updateData:'<updateData>', id:'<id>' to update company successfully
-        When Try to update company data successfully
+    Scenario Outline: Try to update company data with valid data.
+        Given Company details updateData:'<updateData>', id:'<id>' to update company
+        When Try to update company data
         Then It will update company data with message:'<message>' 
 
         Examples:

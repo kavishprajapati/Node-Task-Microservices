@@ -7,7 +7,6 @@ module.exports = function makeUpdateRole({ EmployeeTable, Joi }) {
             return "Role is updated";
         } 
         catch (err) {
-            console.log(err);
             throw err.message
         }
     };

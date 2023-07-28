@@ -3,15 +3,18 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
         try {
 
             const validatedData = await validateData({ username, password })
-
+            
             const userExit = await userTable.getUserByName({ username: validatedData.username });
 
             if (userExit.length === 0) {
                 // User does not exist in the database
                 console.log("User does not exist in the database");
-                return;
-            }
 
+                throw new Error("User does not exist in the database")
+
+                // return;
+            }
+            
             const user = userExit[0];
             const passwordMatch = await bcrypt.compare(validatedData.password, user.password);
 
@@ -39,6 +42,7 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
 
 
         } catch (err) {
+            console.log(err);
             console.log(err.message);
             throw err.message
         }

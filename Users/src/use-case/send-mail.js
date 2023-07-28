@@ -12,7 +12,7 @@ module.exports = function makeSendMail({ nodemailer }) {
             user: 'kavishprajapati18700@gmail.com',
             pass: 'giswrkwiqrsmfcvb'
           }
-        });
+        })
         
         // Set up the email message
         const mailOptions = {
@@ -20,13 +20,13 @@ module.exports = function makeSendMail({ nodemailer }) {
           to: 'akshatvsitapara@gmail.com',
           subject: 'You are logged in to Apple Network',
           text: 'Dear User, you are now logged in to the Apple Network.'
-        };
-  
+        }
+        
         // Send the email
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info);
       } catch (err) {
         throw err;
       }
-    };
-  };
+    }
+  }

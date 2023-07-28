@@ -1,4 +1,4 @@
-Feature: Create New Company.
+Feature: Use-case create new company.
 
     Scenario Outline: Try to create new company with invalid details, then it will throw error.
         Given Company details name:"<name>", city:"<city>", address:"<address>", contact:"<contact>" to create company
@@ -18,9 +18,9 @@ Feature: Create New Company.
             | Kavcon | Ahmedabad  | Sindhu Bhavan Road | 90909090909090 | "contact" must be less than or equal to 9999999999    |
 
 
-    Scenario Outline: Try to create new company with valid details, then it will throw error.
-        Given Company details name:"<name>", city:"<city>", address:"<address>", contact:"<contact>" to create new company Successfully
-        When Try to create new company with valid data
+    Scenario Outline: Try to create new company with valid details.
+        Given Company details name:"<name>", city:"<city>", address:"<address>", contact:"<contact>" to create company
+        When Try to create new company
         Then It will create new company with details:"<message>"
 
         Examples: 

@@ -1,6 +1,6 @@
-Feature: Get All User
+Feature: Use-case to get all user
 
-    Scenario Outline: Get All User Successfully
+    Scenario Outline: Use-case get all user successfully
         When I request to get all users
         Then I should get all users 
 

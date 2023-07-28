@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, After, AfterAll } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi')
@@ -10,20 +10,34 @@ const EmployeeTable = {
     deleteEmployeesByCompanyId: () => {}
 }
 
-const deleteEmployeesByCompanyIdStub = sandbox.stub(EmployeeTable, 'deleteEmployeesByCompanyId')
+let deleteEmployeesByCompanyIdStub;
 
-deleteEmployeesByCompanyIdStub.callsFake((args) => {
-    expect(args).deep.equal({
-        companyId: args.companyId
+BeforeAll(() => {
+    deleteEmployeesByCompanyIdStub = sandbox.stub(EmployeeTable, 'deleteEmployeesByCompanyId')
+})
+
+Before(() => {
+    deleteEmployeesByCompanyIdStub.callsFake((args) => {
+        expect(args).deep.equal({
+            companyId: args.companyId
+        })
     })
 })
 
-//first scenario with invalid id.
+After(() => {
+    this.companyId = undefined;
+    this.result = undefined;
+    this.error = undefined;
+    sandbox.resetHistory();
+})
+
+AfterAll(() => sandbox.restore());
+
 Given('Employees details companyId:{string} to delete employees', (companyId) => {
     this.companyId = companyId || undefined
 })
 
-When('Try to delete employees with invalid companyId', async() => {
+When('Try to delete employees', async() => {
     const deleteEmployeesByCompanyId = makeDeleteEmployeesByCompanyId({ EmployeeTable, Joi })
 
     try{
@@ -32,34 +46,19 @@ When('Try to delete employees with invalid companyId', async() => {
         })
     }
     catch(err){
+        this.result = undefined;
         this.error = err
     }
 })
 
+//first scenario with invalid id.
 Then('It will throw error with message: {string} while deleting employees data', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
-
 //second scenario
-Given('Employees details companyId:{string} to delete employees successfully', (companyId) => {
-    this.companyId = companyId || undefined
-})
-
-When('Try to delete employees with valid companyId', async() => {
-    const deleteEmployeesByCompanyId = makeDeleteEmployeesByCompanyId({ EmployeeTable, Joi })
-
-    try{
-        this.result = await deleteEmployeesByCompanyId({
-            companyId: this.companyId
-        })
-    }
-    catch(err){
-        this.error = err
-    }
-})
-
 Then('It will delete employees with message: {string}', (message) => {
-    console.log(this.result);
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, BeforeAll, Before, AfterAll, After } = require('cucumber')
 const sinon = require('sinon')
 const expect = require('chai').expect;
 const Joi = require('joi')
@@ -10,54 +10,55 @@ const EmployeeTable = {
     deleteEmployee: () => {}
 }
 
-const deleteEmployeeStub = sandbox.stub(EmployeeTable, 'deleteEmployee')
+let deleteEmployeeStub;
 
-deleteEmployeeStub.callsFake((args) => {
-    expect(args).deep.equal({
-        id: args.id
+BeforeAll(() => {
+    deleteEmployeeStub = sandbox.stub(EmployeeTable, 'deleteEmployee')
+})
+
+Before(() => {
+    deleteEmployeeStub.callsFake((args) => {
+        expect(args).deep.equal({
+            id: args.id
+        })
     })
 })
 
-// for invalid scenario
+After(() => {
+    this.id = undefined;
+    this.result = undefined;
+    this.error = undefined;
+    sandbox.resetHistory();
+})
+
+AfterAll(() => sandbox.restore());
+
 Given('employee details id:{string} to delete employee', (id) => {
     this.id = id || undefined
 })
 
-When('Try to delete employee with invalid id', async() => {
+When('Try to delete employee', async() => {
     const deleteEmployee = makeDeleteEmployee({ EmployeeTable, Joi })
-
+    
     try{
         this.result = await deleteEmployee({
             id: this.id
         })
-     }
-     catch(err){
-        this.error = err
-     }
+    }
+    catch(err){
+        this.result = undefined;
+        this.error = err;
+    }
 })
 
+// for invalid scenario
 Then('It will throw error with message: {string} while deleting employee', (message) => {
+    expect(this.result).to.be.undefined;
     expect(this.error).to.be.eql(message)
 })
 
 //for valid scenario
-Given('employee details id:{string} to delete employee successfully', (id) => {
-    this.id = id || undefined
-})
-
-When('Try to delete employee with valid id', async() => {
-    const deleteEmployee = makeDeleteEmployee({ EmployeeTable, Joi })
-
-    try{
-        this.result = await deleteEmployee({
-            id: this.id
-        })
-     }
-     catch(err){
-        this.error = err
-     }
-})
-
 Then('It will delete employee with message: {string}', (message) => {
+    expect(this.error).to.be.undefined
     expect(this.result).to.be.eql(message)
 })

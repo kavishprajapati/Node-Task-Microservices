@@ -1,8 +1,8 @@
-Feature: Delete User
+Feature: Use-Case to delete user
 
     Scenario Outline: Try to delete user with invalid details, then it will throw error.
         Given user details id:'<id>' to delete user
-        When Try to delete user with invalid id
+        When Try to delete user
         Then It will throw error with message: '<message>' while deleting company
 
         Examples:
@@ -10,9 +10,9 @@ Feature: Delete User
             | 123 | "id" must be a valid GUID |
 
 
-    Scenario Outline: Try to delete user with valid details, then it will throw error.
-        Given user details id:'<id>' to delete user successfully
-        When Try to delete user with valid id 
+    Scenario Outline: Try to delete user with valid details.
+        Given user details id:'<id>' to delete user
+        When Try to delete user
         Then It will throw error with message: '<message>' while deleting user successfully
 
         Examples:
