@@ -39,9 +39,6 @@ module.exports = function makeValidateMiddleware({ getByIdAssignedRole, getRoleD
                 status: "Error",
                 data: err.message
             })
-
-            // If the token is valid and the user's permission is okay, then allow them to perform the necessary action
-            // next();
         };
     }
 }

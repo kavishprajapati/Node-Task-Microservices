@@ -18,6 +18,4 @@ Feature: Use-case delete company
         Examples:
             | id                                   | message                      |
             | 3d8021d4-10af-461e-956a-92faa2b6447b | Company deleted successfully |
-
-
             

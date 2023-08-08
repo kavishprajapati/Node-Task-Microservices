@@ -4,7 +4,7 @@ module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee 
         try {
         
             const validatedData = validateData({ name, city, address, contact });
-    
+        
             const companyData =  await companyTable.createCompany({ name: validatedData.name, city: validatedData.city, address: validatedData.address, contact: validatedData.contact })
           
             if(!companyData){
@@ -34,7 +34,6 @@ module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee 
         if (error) {
             throw error.details[0];
         }
-        
         return value;      
     }
 }

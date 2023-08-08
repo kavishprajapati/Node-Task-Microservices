@@ -12,7 +12,7 @@ const cockroach = new Pool({
     max: config.cockroach.max,
     idleTimeoutMillis: config.idleTimeoutMillis,
     connectionTimeoutMillis: config.cockroach.connectionTimeoutMillis,
-    ssl: config.cockroach.ssl
+    // ssl: config.cockroach.ssl
 
 })
 

@@ -8,6 +8,7 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
                 const companyID = await getCompanyId({ companyName }) //this is internal call which fetch company id from company
                 await EmployeeTable.createEmployee({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
             }
+            
             else{
                 const empData = await EmployeeTable.createEmployee({ cmpId: cmpId, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role }) 
 
