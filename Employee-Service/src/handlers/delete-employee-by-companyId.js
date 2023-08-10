@@ -9,7 +9,7 @@ module.exports = function makeDeleteAllEmployeeByCompanyId({ deleteEmployeesByCo
 
     const run = async () => {
       await consumer.connect();
-      await consumer.subscribe({ topic: 'company-events', fromBeginning: true });
+      await consumer.subscribe({ topic: 'company-events' });
 
       await consumer.run({
         eachMessage: async ({ topic, message }) => {

@@ -7,9 +7,9 @@ const sequelize = new Sequelize(config.cockroach.database, config.cockroach.user
   host: config.cockroach.host,
   port: config.cockroach.port,
   dialect: config.cockroach.dialect,
-  dialectOptions: {
-    ssl: config.cockroach.ssl
-  }
+  // dialectOptions: {
+  //   ssl: config.cockroach.ssl
+  // }
 });
 
 const umzug = new Umzug({
@@ -19,6 +19,6 @@ const umzug = new Umzug({
 });
 
 (async () => {
-  await umzug.up();
+  await umzug.down();
 })();
 

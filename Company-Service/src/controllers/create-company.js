@@ -5,7 +5,7 @@ module.exports = function makeCreateCompanyAction({createCompany}){
             const { name, city, address, contact } = req.body;
             const newCompany = await createCompany ({name, city, address, contact})
             res.status(201).json({
-                status: "New Company Created Successfully",
+                status: "Success",
                 data: newCompany
             })
         }

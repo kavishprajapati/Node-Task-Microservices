@@ -4,7 +4,7 @@ const config = {
     cockroach: {
         host: 'localhost',
         user: 'kavish',
-        password: 'kavish',
+        // password: 'kavish',
         database: 'companydb',
         port: 26257,
         max: 20,
@@ -20,3 +20,5 @@ const config = {
 }
 
 module.exports = config
+
+

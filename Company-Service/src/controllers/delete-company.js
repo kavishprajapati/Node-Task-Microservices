@@ -4,13 +4,14 @@ module.exports = function makeDeleteCompanyAction({deleteCompany}){
         try{
              const id = req.params.id
              await deleteCompany({id})
-            res.status(204).json({
+            res.status(200).json({
                 status: "Success",
                 data: "Company Deleted"
             })
         }
 
         catch(err){
+            console.log(err);
             res.status(400).json({
                 status: "Error",
                 data: err

@@ -7,7 +7,7 @@ function makeCompany({ cockroach }) {
         updateCompany,
         getCompanyByName
     });
-
+    
     async function getAllCompanyData() {
 
         try {

@@ -9,7 +9,7 @@ module.exports = function makeGetAllUserAction({ getAllUser }){
         }
         catch(err){
             res.status(400).json({
-                status: "fail",
+                status: "Fail",
                 data: err
             })
         }

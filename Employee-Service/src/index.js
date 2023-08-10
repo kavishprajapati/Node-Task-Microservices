@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express();
 const deleteAllEmployeeByCompanyId = require('./handlers/index')
-// deleteAllEmployeeByCompanyId()
+
+deleteAllEmployeeByCompanyId()
 
 //middleware
 app.use(express.json()) //this middleware is for json-data

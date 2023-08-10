@@ -16,7 +16,7 @@ module.exports = function makeUpdateEmployee({ EmployeeTable, Joi }) {
             throw err.message
         }
     }
-
+    
     function validateData({ updateData, id }) {
 
         const { error, value } = Joi.object({

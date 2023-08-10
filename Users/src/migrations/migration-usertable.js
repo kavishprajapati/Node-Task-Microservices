@@ -1,4 +1,4 @@
-const { Sequelize, fn } = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable('user_table', {
@@ -13,7 +13,8 @@ async function up({ context: queryInterface }) {
     },
     useremail: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: Sequelize.STRING,
