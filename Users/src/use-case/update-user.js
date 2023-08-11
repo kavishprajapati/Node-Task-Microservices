@@ -10,7 +10,6 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
             const validatedData = validateData({ updateUserData, id })
             await userTable.updateUser({ ...validatedData, id })
 
-            return "user data updated successfully";
         }
         catch(err){
             throw err.message;

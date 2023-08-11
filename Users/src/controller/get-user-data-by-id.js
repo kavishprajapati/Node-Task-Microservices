@@ -5,13 +5,13 @@ module.exports = function makeGetUserDataByIdAction({ getUserDataById }){
             const userdata = await getUserDataById({ id }) 
             res.status(200).json({
                 status: "Success",
-                data: { userdata }
+                data: { userdata: userdata }
             })
         }
         catch(err){
-            res.status(400).json({
+            res.status(404).json({
                 status: "Fail",
-                data: "Fail to get data by an id"
+                data: {error: err}
             })
         }
     }

@@ -1,5 +1,5 @@
-const userTable = user_table
-const userTokenTable = usertoken_table
+const userTable = 'user_table';
+const userTokenTable = 'usertoken_table';
 
 function makeUser({ cockroach, bcrypt }) {
     return Object.freeze({
@@ -15,7 +15,15 @@ function makeUser({ cockroach, bcrypt }) {
     async function createUser({ username, useremail, password }) {
         try {
             const encryptedPassword = await bcrypt.hash(password, 10)
-            const createUser = await cockroach.query(`INSERT INTO ${userTable} (userid, username, useremail, password) VALUES (gen_random_uuid(), '${username}', '${useremail}', '${encryptedPassword}')`);
+            const createUser = await cockroach.query(`INSERT INTO ${userTable} (userid, username, useremail, password) VALUES (gen_random_uuid(), '${username}', '${useremail}', '${encryptedPassword}') RETURNING *`);
+            const result = createUser.rows
+        
+            if ( !result || !result.length ){
+                return false
+            }
+            
+            return result[0].userid;
+
         }
         catch (err) {
             throw err
@@ -27,8 +35,9 @@ function makeUser({ cockroach, bcrypt }) {
             const allUser = await cockroach.query(`select * from ${userTable}`)
             const result = allUser.rows;
 
-            if (!result || result.length === 0) {
-                throw new Error(" No User Data Found ")
+            if (!result || !result.length ) {
+
+                return []
             }
 
             return result
@@ -43,9 +52,9 @@ function makeUser({ cockroach, bcrypt }) {
             const getDataById = await cockroach.query(`select * from ${userTable} where userid = '${id}'`)
             const result = getDataById.rows
 
-            if (!result || result.length === 0) {
+            if (!result || !result.length) {
 
-                throw new Error("No data is present with this id")
+                return false
             }
 
             return result;
@@ -90,11 +99,11 @@ function makeUser({ cockroach, bcrypt }) {
     async function getUserByName({ username }) {
         try {
             const loggedUser = await cockroach.query(`select * from ${userTable} where username = '${username}'`)
-
             const result = loggedUser.rows
 
-            if (!result || result.length === 0) {
-                throw new Error("User Not Found")
+            if (!result || !result.length ){
+                
+                return false
             }
 
             return result;
@@ -114,6 +123,5 @@ function makeUser({ cockroach, bcrypt }) {
         }
     }
 }
-
 
 module.exports = makeUser

@@ -1,20 +1,19 @@
-module.exports = function makeCreateUserAction({ createUser }){
-    return async function createUserAction(req, res){
-        try{
+module.exports = function makeCreateUserAction({ createUser }) {
+    return async function createUserAction(req, res) {
+        try {
             const { username, useremail, password } = req.body;
-            const userdata = await createUser({ username, useremail, password })
-    
+            const newUser = await createUser({ username, useremail, password })
+
             res.status(201).json({
                 status: "Success",
-                data: "New User Successfully Created"
+                Data: { userid: newUser }
             })
         }
-        catch(err){
+        catch (err) {
             res.status(400).json({
                 status: "Fail",
-                data: err
+                data: { error: err }
             })
         }
-
     }
 }

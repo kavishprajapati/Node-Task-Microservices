@@ -2,11 +2,9 @@ module.exports = function makeDeleteUser({ userTable, Joi }){
     return async function deleteUser({ id }){
 
         try{
-            console.log(id);
             const validatedId = validateData({ id })
             await userTable.deleteUser({ id: validatedId.id })
 
-            return "user deleted successfully";
         }
         catch(err){
             throw err.message

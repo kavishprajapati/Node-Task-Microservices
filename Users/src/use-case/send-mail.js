@@ -23,9 +23,10 @@ module.exports = function makeSendMail({ nodemailer }) {
         }
         
         // Send the email
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info);
-      } catch (err) {
+         await transporter.sendMail(mailOptions);
+
+      } 
+      catch (err) {
         throw err;
       }
     }

@@ -3,12 +3,17 @@ module.exports = function makeGetUserDataById({ userTable, Joi }) {
 
         try {
             const validatedId = validateData({ id })
-            return await userTable.getUserDataById({ id: validatedId.id })
+            const result =  await userTable.getUserDataById({ id: validatedId.id })
+           
+            if(!result){
+                throw new Error("User Data Not Found")
+            }
+
+            return result
         }
         catch (err) {
             throw err.message
         }
-
     }
 
     function validateData({ id }) {

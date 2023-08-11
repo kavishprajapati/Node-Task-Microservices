@@ -4,13 +4,13 @@ module.exports = function makeGetAllUserAction({ getAllUser }){
             const userData = await getAllUser()
             res.status(200).json({
                 status: "Success",
-                data: { userData }
+                data: { userData: userData }
             })
         }
         catch(err){
-            res.status(400).json({
+            res.status(404).json({
                 status: "Fail",
-                data: err
+                data: {error: err}
             })
         }
     }

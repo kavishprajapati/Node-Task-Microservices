@@ -2,16 +2,18 @@ module.exports = function makeCreateUser({ userTable, Joi }){
   return async function createUser({ username, useremail, password }){
     
     try{
-            console.log(username, useremail, password);
             const validatedData = validateData({ username, useremail, password })
-            await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
+            const result =  await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
 
-            return "New User Successfully Created"; //this is i have used for test-case purpose
+            if(!result){
+              throw new Error("Not able to fetch userid")
+            }
+
+            return result
         }
         catch(err){
             throw err.message
         }
-
     } 
 
     function validateData({ username, useremail, password }) {

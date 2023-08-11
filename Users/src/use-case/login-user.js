@@ -6,13 +6,10 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
             
             const userExit = await userTable.getUserByName({ username: validatedData.username });
 
-            if (userExit.length === 0) {
+            if ( !userExit ) {
                 // User does not exist in the database
-                console.log("User does not exist in the database");
-
                 throw new Error("User does not exist in the database")
 
-                // return;
             }
             
             const user = userExit[0];
@@ -22,28 +19,19 @@ module.exports = function makeUserLogin({ userTable, Joi, bcrypt, jwt, sendMail 
 
             if (passwordMatch) {
                 // Passwords match, user is authenticated
-                console.log("User authenticated");
-
                 const token = jwt.sign({ userid: userId }, 'kavish-token', { expiresIn: '24h' });
                 await userTable.storeUserjwtToken({ userId, token })
 
-                console.log("Token stored");
-
                 await sendMail()
 
-                console.log("Mail sent successfully");
-
-                return "User loggedIn successfully"
-
-            } else {
-                // Passwords do not match, user authentication failed
-                console.log("User authentication failed");
+            }
+            else{
+                throw new Error("Password Not Matched")
             }
 
 
         } catch (err) {
-            console.log(err);
-            console.log(err.message);
+
             throw err.message
         }
     }
