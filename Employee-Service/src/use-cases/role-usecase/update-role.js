@@ -2,9 +2,9 @@ module.exports = function makeUpdateRole({ EmployeeTable, Joi }) {
     return async function updateRole({ roleName, permission, id }) {
         try {
             const validatedData = await validateData({ roleName, permission, id });
-            await EmployeeTable.updateRole({ roleName: validatedData.roleName, permission: validatedData.permission, id: validatedData.id })
+            let result = await EmployeeTable.updateRole({ roleName: validatedData.roleName, permission: validatedData.permission, id: validatedData.id })
 
-            return "Role is updated";
+            return result;
         } 
         catch (err) {
             throw err.message

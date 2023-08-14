@@ -13,7 +13,7 @@ Feature: Use-Case to delete user
     Scenario Outline: Try to delete user with valid details.
         Given user details id:'<id>' to delete user
         When Try to delete user
-        Then It will throw error with message: '<message>' while deleting user successfully
+        Then It will give message: '<message>' while deleting user successfully
 
         Examples:
             | id                                   | message                   |

@@ -1,13 +1,16 @@
+const { result } = require("../delete-employee.spec")
+
 module.exports = function makeAssignRole({ EmployeeTable, Joi }){
     return async function assignRole({ roleid, employeeid }){
 
         try{
 
             const validatedId = validateData({ roleid, employeeid })
-            await EmployeeTable.assignRole({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
+            let result = await EmployeeTable.assignRole({ roleid: validatedId.roleid, employeeid: validatedId.employeeid })
             
-            return "Role is assigned Successfully to an employee"; //this is am using for test-cases
+            return result //this is am using for test-cases
         }
+        
         catch(err){
             throw err.message
         }

@@ -3,9 +3,9 @@ module.exports = function makedeleteAssignedRole({ EmployeeTable, Joi }){
         
         try{
             const validatedId = validateData({ id })
-            await EmployeeTable.deleteAssignedrole({ id: validatedId.id })
+            let result = await EmployeeTable.deleteAssignedrole({ id: validatedId.id })
         
-            return "assigned role deleted successfully"; //this is used in test-cases
+            return result; //this is used in test-cases
         }
         catch(err){
             throw err.message

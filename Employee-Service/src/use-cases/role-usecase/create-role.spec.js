@@ -24,7 +24,7 @@ Before(() => {
             companyid: args.companyid,
             permission: args.permission
         })
-        return "New Role Is Created"
+        return "New Role Is Created";
     })
 })
 

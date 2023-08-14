@@ -24,6 +24,8 @@ Before(() => {
             permission: args.permission,
             id: args.id
         })
+
+        return "Role is updated";
     })
 })
 

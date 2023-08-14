@@ -24,6 +24,8 @@ Before(() => {
             useremail: args.useremail,
             password: args.password
         })
+
+        return "New User Successfully Created";
     })
 })
 
@@ -56,7 +58,7 @@ When('Try to create user', async() => {
     }
     catch(err){
         this.result = undefined;
-        this.error = err;
+        this.error = err
     }
 })
 

@@ -21,4 +21,5 @@ Feature: Use-Case to create new user
 
         Examples:
             | username | useremail      | password   | message                       |
-            | Amit     | Amit@gmail.com | Abc@12345& | New User Successfully Created |
+            | Amit     | Amit@gmail.com | Abc@123&   | New User Successfully Created |
+            

@@ -15,7 +15,7 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
                     throw new Error("Not able to fetch employee id")
                 }
 
-                return result
+                return result;
             }
             
             else {

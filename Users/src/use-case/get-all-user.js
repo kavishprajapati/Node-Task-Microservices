@@ -4,6 +4,7 @@ module.exports = function makeGetAllUser({ userTable }){
             const result =  await userTable.getAllUser()
             return result;
         }
+        
         catch(err){
             throw err
         }

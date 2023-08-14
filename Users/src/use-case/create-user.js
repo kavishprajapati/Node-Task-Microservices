@@ -3,6 +3,7 @@ module.exports = function makeCreateUser({ userTable, Joi }){
     
     try{
             const validatedData = validateData({ username, useremail, password })
+
             const result =  await userTable.createUser({ username: validatedData.username, useremail: validatedData.useremail, password: validatedData.password })
 
             if(!result){
@@ -11,6 +12,7 @@ module.exports = function makeCreateUser({ userTable, Joi }){
 
             return result
         }
+
         catch(err){
             throw err.message
         }

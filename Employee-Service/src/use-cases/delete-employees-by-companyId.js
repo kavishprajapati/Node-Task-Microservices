@@ -3,7 +3,9 @@ module.exports = function makeDeleteEmployeesByCompanyId({ EmployeeTable, Joi })
 
         try{
             const validatedId = validateData ({ companyId });
-            await EmployeeTable.deleteEmployeesByCompanyId( {companyId: validatedId.companyId} ) 
+            let result = await EmployeeTable.deleteEmployeesByCompanyId( {companyId: validatedId.companyId} ) 
+        
+            return result;
         }
         catch(err){
             throw err.message

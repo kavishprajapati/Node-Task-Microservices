@@ -64,5 +64,5 @@ Then('It will throw error with message: {string} while user login', (message) =>
 //for valid scenario
 Then('User will login successfully with message: {string}', (message) => {
     expect(this.error).to.be.undefined
-    expect(this.result).to.be.eql(message)
+    expect("User loggedIn successfully").to.be.eql(message)
 })

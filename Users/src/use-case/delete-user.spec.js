@@ -10,7 +10,7 @@ const userTable = {
     deleteUser: () => { }
 }
 
-let deleteUserStub
+let deleteUserStub;
 
 BeforeAll(() => {
     deleteUserStub = sandbox.stub(userTable, 'deleteUser')
@@ -21,13 +21,15 @@ Before(() => {
         expect(args).deep.equal({
             id: args.id
         })
+
+        return "user deleted successfully";
     })
 })
 
 After(() => {
     this.id = undefined;
     this.error = undefined;
-    this.result = undefined
+    this.result = undefined;
     sandbox.resetHistory();
 })
 
@@ -42,7 +44,7 @@ When('Try to delete user', async () => {
     
     try{
         this.result = await deleteUser({
-            id: this.id
+            id: this.id,
         })
     }
     catch(err){
@@ -58,7 +60,12 @@ Then('It will throw error with message: {string} while deleting company',async (
 })
 
 //second scenario for valid id
-Then('It will throw error with message: {string} while deleting user successfully',async (message) => {
+Then('It will give message: {string} while deleting user successfully',async (message) => {
     expect(this.error).to.be.undefined
+    console.log(this.result);
     expect(this.result).to.be.eql(message)
 })
+
+
+
+

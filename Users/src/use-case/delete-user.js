@@ -3,9 +3,11 @@ module.exports = function makeDeleteUser({ userTable, Joi }){
 
         try{
             const validatedId = validateData({ id })
-            await userTable.deleteUser({ id: validatedId.id })
+            const result = await userTable.deleteUser({ id: validatedId.id })
 
+            return result;
         }
+        
         catch(err){
             throw err.message
         }

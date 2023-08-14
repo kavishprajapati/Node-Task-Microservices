@@ -23,7 +23,7 @@ function makeUser({ cockroach, bcrypt }) {
                 
                 return false
             }
-            
+
             return result[0].userid;
 
         }

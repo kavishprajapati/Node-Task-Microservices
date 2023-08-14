@@ -7,9 +7,9 @@ module.exports = function makeUpdateCompany({ companyTable, Joi }) {
             }
 
             const validatedData = await validateData({ updateData, id })
-            await companyTable.updateCompany({ ...validatedData, id })
+            let result = await companyTable.updateCompany({ ...validatedData, id })
 
-            return "Company data updated successfully"; // this line giving return value to testcase, i have written this line which i have used to pass a test-case.
+            return result; // this line giving return value to testcase, i have written this line which i have used to pass a test-case.
         }
         catch (err) {
             throw err.message;

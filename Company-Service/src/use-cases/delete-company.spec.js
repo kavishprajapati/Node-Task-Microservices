@@ -31,6 +31,7 @@ Before(() => {
         expect(args).deep.equal({
             id: args.id
         })
+        return "Company deleted successfully";
     })
 
     producerStub.callsFake(() => {
@@ -83,6 +84,6 @@ Then('It will throw error with message: {string} while deleting company', (messa
 //for valid scenario
 Then('It will delete company with message: {string}', (message) => {
     expect(this.error).to.be.undefined
-    expect(this.result.message).to.be.eql(message)
+    expect(this.result).to.be.eql(message)
 })
 

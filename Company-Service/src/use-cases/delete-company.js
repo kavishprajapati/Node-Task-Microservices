@@ -3,7 +3,7 @@ module.exports = function makeDeleteCompany({companyTable, Joi, producer}){
 
         try{
             const validatedId = validateData({ id });
-            await companyTable.deleteCompany({ id: validatedId.id })
+            let result = await companyTable.deleteCompany({ id: validatedId.id })
 
             //Publish "CompanyDeleted" event
             await producer.connect();
@@ -17,7 +17,9 @@ module.exports = function makeDeleteCompany({companyTable, Joi, producer}){
                 ]
             })
 
+            return result
         }
+
         catch(err){
             throw err.message;
         }

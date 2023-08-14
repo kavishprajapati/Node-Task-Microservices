@@ -1,17 +1,20 @@
-module.exports = function makeUpdateUser({ userTable, Joi }){
-    return async function updateUser({ updateUserData, id }){
+module.exports = function makeUpdateUser({ userTable, Joi }) {
+    return async function updateUser({ updateUserData, id }) {
 
-        try{
+        try {
 
-            if( Object.keys(updateUserData).length === 0 ){
+            if (Object.keys(updateUserData).length === 0) {
                 throw new Error("Update data cannot be empty");
             }
 
             const validatedData = validateData({ updateUserData, id })
-            await userTable.updateUser({ ...validatedData, id })
 
+            let result = await userTable.updateUser({ ...validatedData, id })
+
+            return result;
         }
-        catch(err){
+
+        catch (err) {
             throw err.message;
         }
 
@@ -30,7 +33,7 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
                     .pattern(passwordRegex, 'password')
                     .messages({
                         'string.pattern.base': 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.'
-                      })
+                    })
             })
         })
 
@@ -39,7 +42,7 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
         if (error) {
             throw error.details[0]
         }
-            
+
         return value;
     }
 }
@@ -47,4 +50,3 @@ module.exports = function makeUpdateUser({ userTable, Joi }){
 
 
 
-      

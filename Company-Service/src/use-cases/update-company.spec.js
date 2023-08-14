@@ -22,6 +22,7 @@ Before(() => {
             updateData: args.updateData,
             id: args.id
         })  
+        return "Company data updated successfully";
     })
 })
 

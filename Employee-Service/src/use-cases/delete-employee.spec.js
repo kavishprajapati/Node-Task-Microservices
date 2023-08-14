@@ -21,6 +21,7 @@ Before(() => {
         expect(args).deep.equal({
             id: args.id
         })
+        return "employee deleted successfully";
     })
 })
 

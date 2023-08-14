@@ -22,6 +22,8 @@ Before(() => {
         expect(args).deep.equal({
             id: args.id
         })
+        
+        return "assigned role deleted successfully";
     })
 })
 

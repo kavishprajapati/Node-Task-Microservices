@@ -24,9 +24,9 @@ Before(() => {
                 useremail: "krushanu@rapidops.com",
                 password: "2b$10$CpSNqQ2RMxxYPvM6MipgOexI3.l8GZEfjLu.dUjV/ABPm/OGBrDka" 
             }
-        ];
-    });
-});
+        ]
+    })
+})
 
 AfterAll(() =>  sandbox.restore() )
 
