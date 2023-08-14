@@ -1,3 +1,5 @@
+const companyTable = 'companytable';
+
 function makeCompany({ cockroach }) {
     return Object.freeze({
         getAllCompanyData,
@@ -7,15 +9,17 @@ function makeCompany({ cockroach }) {
         updateCompany,
         getCompanyByName
     });
-    
+
+
     async function getAllCompanyData() {
 
         try {
-            const data = await cockroach.query("select * from companytable")
+            const data = await cockroach.query(`select * from ${companyTable}`)
 
             const result = data.rows;
 
-            if (!result || result.length === 0) {
+            if (!result || !result.length) {
+
                 return []
             }
 
@@ -26,14 +30,15 @@ function makeCompany({ cockroach }) {
         }
     }
 
+
     async function getCompanyData({ id }) {
 
         try {
-            const getData = await cockroach.query(`select * from companytable where id = '${id}'`)
+            const getData = await cockroach.query(`select * from ${companyTable} where id = '${id}'`)
 
             const result = getData.rows;
 
-            if (!result || result.length === 0) {
+            if (!result || !result.length) {
                 return false
             }
 
@@ -49,12 +54,17 @@ function makeCompany({ cockroach }) {
     async function createCompany({ name, city, address, contact }) {
 
         try {
-            const createCompany = await cockroach.query(`insert into companytable (id, name, city, address, contact) values(gen_random_uuid(), '${name}', '${city}', '${address}', '${contact}')  RETURNING *`);
+            const createCompany = await cockroach.query(`insert into ${companyTable} (id, name, city, address, contact) values(gen_random_uuid(), '${name}', '${city}', '${address}', '${contact}')  RETURNING *`);
 
-            if (createCompany.rows.length === 0) {
+            const result = createCompany.rows
+
+            if (!result || !result.length) {
+
                 return false
             }
-            return createCompany.rows[0];
+
+            return result[0].id;
+
         }
         catch (err) {
             throw err;
@@ -65,7 +75,7 @@ function makeCompany({ cockroach }) {
     async function deleteCompany({ id }) {
         try {
 
-            const deleteQuery = await cockroach.query(`delete from companytable where id = '${id}'`)
+            const deleteQuery = await cockroach.query(`delete from ${companyTable} where id = '${id}'`)
         }
         catch (err) {
             throw err
@@ -80,7 +90,7 @@ function makeCompany({ cockroach }) {
                 update.push(`${key} = '${value}'`);
             });
 
-            const updateQuery = await cockroach.query(`UPDATE companytable SET ${update.join(',')} WHERE id = '${id}'`)
+            const updateQuery = await cockroach.query(`UPDATE ${companyTable} SET ${update.join(',')} WHERE id = '${id}'`)
 
         }
         catch (err) {
@@ -91,11 +101,11 @@ function makeCompany({ cockroach }) {
 
     async function getCompanyByName({ companyname }) {
         try {
-            const dataByNameQuery = await cockroach.query(`select * from companytable where name = '${companyname}'`)
+            const dataByNameQuery = await cockroach.query(`select * from ${companyTable} where name = '${companyname}'`)
 
             const result = dataByNameQuery.rows;
 
-            if (!result || result.length === 0) {
+            if (!result || !result.length) {
                 return false
             }
 

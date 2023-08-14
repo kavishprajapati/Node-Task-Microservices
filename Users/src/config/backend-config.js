@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 const config = {
     cockroach: {
         host: 'localhost',
@@ -9,10 +7,8 @@ const config = {
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 2000,
-        dialect: 'postgres',
+        dialect: 'postgres'
     }
 }
 
 module.exports = config
-
-

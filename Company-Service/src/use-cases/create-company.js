@@ -5,18 +5,14 @@ module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee 
         
             const validatedData = validateData({ name, city, address, contact });
         
-            const companyData =  await companyTable.createCompany({ name: validatedData.name, city: validatedData.city, address: validatedData.address, contact: validatedData.contact })
-          
-            if(!companyData){
-                throw new Error("Failed to create company")
+            const companyId =  await companyTable.createCompany({ name: validatedData.name, city: validatedData.city, address: validatedData.address, contact: validatedData.contact })
+            
+            if(!companyId){
+                throw new Error("Not able to fetch company Id")
             }
-
-            const companyId = companyData.id
-
+            
             await createEmployee({ companyId })
-
-            return "New Company Created Successfully "
-
+            
         }
         catch (err){
             throw err.message;
@@ -37,3 +33,5 @@ module.exports = function makeCreateCompany({ companyTable, Joi, createEmployee 
         return value;      
     }
 }
+
+

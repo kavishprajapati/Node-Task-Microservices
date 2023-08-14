@@ -4,8 +4,13 @@ module.exports = function makeGetByIdAssignedRole({ EmployeeTable, Joi }){
         try{
             
             const validatedId = await validateData({ id })
-            return await EmployeeTable.getByIdAssignedRole({ id: validatedId.id })
+            const result =  await EmployeeTable.getByIdAssignedRole({ id: validatedId.id })
 
+            if(!result){
+                throw new Error("Not able to get Data")
+            }
+
+            return result
         }
         catch(err){
             throw err.message

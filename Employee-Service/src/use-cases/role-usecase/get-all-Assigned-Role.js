@@ -4,6 +4,7 @@ module.exports = function makeGetAssignedRole({ EmployeeTable }){
         try{
             return await EmployeeTable.getAssignedRole();
         }
+
         catch(err){
             throw err
         }

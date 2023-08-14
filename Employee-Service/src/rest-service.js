@@ -7,8 +7,6 @@ const controller = require('./controller/Role-Controller')
 
 const { validateMiddleware } = require('./middleware')
 
-// router.get('/Employee', (req, res, next) => validateMiddleware(req, res, next, "employee.read"), Controller.getAllEmployeeAction);
-
 
 router 
     .get('/Employee', (req, res, next) => validateMiddleware(req, res, next, {permission: "employee.read"}), Controller.getAllEmployeeAction)

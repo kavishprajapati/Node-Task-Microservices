@@ -29,7 +29,6 @@ module.exports = function makeUpdateCompany({ companyTable, Joi }) {
         }).validate({ updateData, id });
 
         if (error) {
-
             throw error.details[0]
         }
         

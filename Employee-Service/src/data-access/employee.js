@@ -1,3 +1,7 @@
+const employeeTable = 'employeetable';
+const roleTable = 'roletable';
+const assignedRole = 'assigned_role';
+
 function makeEmployee({ cockroach }) {
   return Object.freeze({
     createEmployee,
@@ -20,14 +24,19 @@ function makeEmployee({ cockroach }) {
   async function createEmployee({ cmpId, empName, contact, role }) {
     try {
 
-      const createEmp = await cockroach.query(`INSERT INTO EmployeeTable (cmpId, EmpId, empName, contact, role) VALUES('${cmpId}', gen_random_uuid(), '${empName}', '${contact}', '${role}') RETURNING * `);
+      const createEmp = await cockroach.query(`INSERT INTO ${employeeTable} (cmpId, EmpId, empName, contact, role) VALUES('${cmpId}', gen_random_uuid(), '${empName}', '${contact}', '${role}') RETURNING * `);
 
-      if (createEmp.rows.length === 0) {
-        throw new Error("Failed to create employee")
+      const result = createEmp.rows
+
+      if (!result || !result.length) {
+
+        return false
+
       }
 
-      return createEmp.rows[0];
+      return result[0].empid;
     }
+
     catch (err) {
       throw err;
     }
@@ -36,12 +45,14 @@ function makeEmployee({ cockroach }) {
   async function getAllEmployee() {
 
     try {
-      const allEmployeeData = await cockroach.query("select * from employeetable");
-      
+      const allEmployeeData = await cockroach.query(`select * from ${employeeTable}`);
+
       const result = allEmployeeData.rows;
 
-      if (!result || result.length === 0) {
-        throw new Error("Company data not found")
+      if (!result || !result.length) {
+
+        return []
+
       }
 
       return result;
@@ -55,12 +66,13 @@ function makeEmployee({ cockroach }) {
   async function getEmployee({ id }) {
     try {
 
-      const getDataById = await cockroach.query(`select * from employeetable where empid = '${id}' `)
-     
+      const getDataById = await cockroach.query(`select * from ${employeeTable} where empid = '${id}' `)
+
       const result = getDataById.rows;
 
-      if (!result || result.length === 0) {
-        throw new Error("Company Data Not Found")
+      if (!result || !result.length) {
+
+        return false
       }
 
       return result;
@@ -73,7 +85,7 @@ function makeEmployee({ cockroach }) {
 
   async function deleteEmployee({ id }) {
     try {
-      const deleteEmployee = await cockroach.query(`delete from employeetable where empid = '${id}'`)
+      const deleteEmployee = await cockroach.query(`delete from ${employeeTable} where empid = '${id}'`)
     }
     catch (err) {
       throw err
@@ -81,10 +93,10 @@ function makeEmployee({ cockroach }) {
   }
 
   async function deleteEmployeesByCompanyId({ companyId }) {
-    try{
-      const deleteEmployees = await cockroach.query(`delete from employeetable where cmpid = '${companyId}'`)
+    try {
+      const deleteEmployees = await cockroach.query(`delete from ${employeeTable} where cmpid = '${companyId}'`)
     }
-    catch(err){
+    catch (err) {
       throw err
     }
   }
@@ -98,46 +110,49 @@ function makeEmployee({ cockroach }) {
         update.push(`${key} = '${value}'`);
       });
 
-      const updateQuery = await cockroach.query(`UPDATE employeetable SET ${update.join(',')} WHERE empid = '${id}'`)
- 
+      const updateQuery = await cockroach.query(`UPDATE ${employeeTable} SET ${update.join(',')} WHERE empid = '${id}'`)
+
     }
     catch (err) {
       throw err
     }
   }
 
-  ///////////////////
-  // API for role ///
-  ///////////////////
+  //////////////////////////////////////////////////////////////////////
+  // API for role /////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////
+
   async function createRole({ roleName, companyid, permission }) {
     try {
-      console.log(roleName, companyid, permission);
 
-      const createRole = await cockroach.query(`INSERT INTO roletable (roleid, roleName, companyid, permission) VALUES (gen_random_uuid(), $1, $2, $3) RETURNING *`, [roleName, companyid, JSON.stringify(permission)]);
-      const result = createRole.rows[0]
+      const createRole = await cockroach.query(`INSERT INTO ${roleTable} (roleid, roleName, companyid, permission) VALUES (gen_random_uuid(), $1, $2, $3) RETURNING *`, [roleName, companyid, JSON.stringify(permission)]);
+     
+      const result = createRole.rows
 
-      
-      if(!result || result.length === 0){
-        throw new Error("Assigned Role Data Not Found")
+      if (!result || !result.length ) {
+
+        return false
+
       }
-      console.log(result);
-      
-      return result;
-      
+      return result[0].roleid;
+
     } catch (err) {
+
       throw err;
     }
   }
-  
+
   async function getAllRoleDetails() {
     try {
-      
-      const allRoleDetails = await cockroach.query("select * from roletable");
-      
+
+      const allRoleDetails = await cockroach.query(`select * from ${roleTable}`);
+
       const result = allRoleDetails.rows
 
-      if (!result || result.length === 0) {
-        throw new Error("Role data not found")
+      if ( !result || !result.length ) {
+        
+        return []
+
       }
 
       return result;
@@ -146,26 +161,27 @@ function makeEmployee({ cockroach }) {
       throw err
     }
   }
-  
+
   async function deleteRole({ id }) {
-    
+
     try {
-      const deleterole = await cockroach.query(`delete from roletable where roleid = '${id}'`)
-    
+
+      const deleterole = await cockroach.query(`delete from ${roleTable} where roleid = '${id}'`)
+
     }
     catch (err) {
       throw err
     }
-    
+
   }
-  
+
   async function updateRole({ roleName, permission, id }) {
     try {
-      const query = `UPDATE roleTable SET roleName = $1, permission = $2 WHERE roleId = $3`;
+      const query = `UPDATE ${roleTable} SET roleName = $1, permission = $2 WHERE roleId = $3`;
       const values = [roleName, permission, id];
-      
+
       const result = await cockroach.query(query, values);
-      
+
     } catch (err) {
       throw err;
     }
@@ -174,35 +190,34 @@ function makeEmployee({ cockroach }) {
 
   async function getRoleDataById({ id }) {
     try {
-      
-      const getDataById = await cockroach.query(`select * from roletable where roleid = '${id}'`)
-      
+
+      const getDataById = await cockroach.query(`select * from ${roleTable} where roleid = '${id}'`)
+
       const result = getDataById.rows;
-      
-      
-      if (!result || result.length === 0) {
-        throw new Error("Company Data Not Found")
+
+
+      if (!result || !result.length) {
+        return false
       }
-      
+
       return result;
-      
+
     }
     catch (err) {
       throw err
     }
   }
-  
-  ///////////////////////
-  // Assigned Role Api //
-  ///////////////////////
+
+  ////////////////////////////////////////////////////////////////////////
+  // Assigned Role Api //////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+
   async function assignRole({ roleid, employeeid }) {
-    
+
     try {
-      console.log(roleid);
-      console.log(employeeid);
-      const roleAssigned = await cockroach.query(`insert into assigned_role (id, role_id, employee_id) values(gen_random_uuid(), '${roleid}', '${employeeid}')`)
-      
-    
+
+      const roleAssigned = await cockroach.query(`insert into ${assignedRole} (id, role_id, employee_id) values(gen_random_uuid(), '${roleid}', '${employeeid}')`)
+
     }
     catch (err) {
       throw err
@@ -211,11 +226,11 @@ function makeEmployee({ cockroach }) {
 
   async function getAssignedRole() {
     try {
-      const getAssignedRole = await cockroach.query(`select * from assigned_role`)
+      const getAssignedRole = await cockroach.query(`select * from ${assignedRole}`)
       const result = getAssignedRole.rows
 
-      if (!result || result.length === 0) {
-        throw new Error("AssignedRole data not found")
+      if (!result || !result.length) {
+        return false
       }
 
       return result;
@@ -225,17 +240,19 @@ function makeEmployee({ cockroach }) {
     }
   }
 
-  async function getByIdAssignedRole({ id }){
-    try{
-      const getAssignedRole = await cockroach.query(`select * from assigned_role where employee_id = '${id}'`)
+  async function getByIdAssignedRole({ id }) {
+    try {
+      const getAssignedRole = await cockroach.query(`select * from ${assignedRole} where employee_id = '${id}'`)
+   
       const result = getAssignedRole.rows
 
-      if(!result || result.length === 0){
-        throw new Error("Assigned Role not Found")
+      if (!result || !result.length) {
+        return false
       }
+
       return result
     }
-    catch(err){
+    catch (err) {
       throw err
     }
   }
@@ -243,14 +260,13 @@ function makeEmployee({ cockroach }) {
   async function deleteAssignedrole({ id }) {
     try {
 
-      const deleteAssignedRole = await cockroach.query(`delete from assigned_role where id = '${id}'`)
-      
+      const deleteAssignedRole = await cockroach.query(`delete from ${assignedRole} where id = '${id}'`)
+
     }
     catch (err) {
       throw err;
     }
   }
-
 }
 
 module.exports = makeEmployee;

@@ -5,10 +5,13 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
       const validatedId = validation({ id });
       const data = await EmployeeTable.getEmployee({ id: validatedId.id });
 
+      if(!data){
+        throw new Error("Not able to fetch data of employee")
+      }
+      
       const companyId = data[0].cmpid;
 
       const companyData = await getCompanyData({ companyId });
-      console.log(companyData);
 
       const joinedData = data.map(item => {
         const { cmpid, ...rest } = item;
@@ -17,14 +20,9 @@ module.exports = function makeGetEmployeeDataById({ EmployeeTable, Joi, getCompa
         return { ...rest, ...companyDataWithoutId };
       });
 
-      console.log(joinedData);
-
       return joinedData
     }
     catch (err) {
-      console.log("---------");
-      console.log(err);
-      console.log("----------");
       throw err.message
     }
   }

@@ -12,7 +12,7 @@ module.exports = function makeDeleteRole({ EmployeeTable, Joi }){
         }
 
     }
-
+    
     function validateData({ id }){
         const { error, value } = Joi.object({
             id: Joi.string().uuid().required()
@@ -25,6 +25,5 @@ module.exports = function makeDeleteRole({ EmployeeTable, Joi }){
         return value
     }
 }
-
 
 

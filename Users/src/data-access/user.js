@@ -16,9 +16,11 @@ function makeUser({ cockroach, bcrypt }) {
         try {
             const encryptedPassword = await bcrypt.hash(password, 10)
             const createUser = await cockroach.query(`INSERT INTO ${userTable} (userid, username, useremail, password) VALUES (gen_random_uuid(), '${username}', '${useremail}', '${encryptedPassword}') RETURNING *`);
+            
             const result = createUser.rows
         
             if ( !result || !result.length ){
+                
                 return false
             }
             
@@ -117,7 +119,6 @@ function makeUser({ cockroach, bcrypt }) {
         try {
             const storeToken = await cockroach.query(`INSERT INTO ${userTokenTable} (userid, jwttoken) VALUES('${userId}', '${token}')`)
         }
-
         catch (err) {
             throw err
         }

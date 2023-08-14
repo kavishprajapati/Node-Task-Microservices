@@ -5,16 +5,15 @@ module.exports = function makeDeleteEmployeeAction({ deleteEmployee }){
             const id = req.params.id
             await deleteEmployee({ id })
             res.status(204).json({
-                status: "success",
-                data: "Employee Deleted"
+                status: "Success",
+                data: { message: "Employee Deleted" }
             })
         }
         catch(err){
             res.status(400).json({
                 status: "Fail",
-                data: "Fail to delete employee"
+                data: { error: err }
             })
         }
-
     }
 }

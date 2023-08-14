@@ -12,7 +12,7 @@ module.exports = function makeCreateUserAction({ createUser }) {
         catch (err) {
             res.status(400).json({
                 status: "Fail",
-                data: { error: err }
+                Data: { error: err }
             })
         }
     }

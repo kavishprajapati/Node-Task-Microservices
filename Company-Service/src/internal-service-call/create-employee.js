@@ -1,16 +1,19 @@
-module.exports = function makeCreateEmployee ({ axios }){
-    return async function createEmployee({ companyId }){
+module.exports = function makeCreateEmployee({ axios, config }) {
+    return async function createEmployee({ companyId }) {
+        try {
+            const employeeCreated = await axios({
+                method: 'post',
+                url: `${config.serviceEndpoints.Employee}`,
+                data: {
+                    cmpId: companyId,
+                    empName: "savan",
+                    contact: 7878787879,
+                    role: "admin"   
+                }
+            });
 
-        try{
-            const employeeCreated = axios.post('http://localhost:9092/Employee', {
-                cmpId: companyId,
-                empName: "Dipti",
-                contact: 7878787878,
-                role: "admin"
-            })
+        } catch (err) {
+            throw err 
         }
-        catch(err){
-            throw err
-        }
-    }
-}
+    };
+};

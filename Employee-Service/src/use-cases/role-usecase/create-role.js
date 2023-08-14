@@ -4,6 +4,11 @@ module.exports = function makeCreateRole({ EmployeeTable, Joi }) {
         try {
             const validatedData = validateData({ roleName, companyid, permission });
             const employeeData = await EmployeeTable.createRole({ roleName: validatedData.roleName, companyid: validatedData.companyid, permission: validatedData.permission })
+            
+            if(!employeeData){
+                throw new Error("Not able to get employeeData")
+            }
+
             return employeeData
         }
         catch (err) {
@@ -18,7 +23,6 @@ module.exports = function makeCreateRole({ EmployeeTable, Joi }) {
             roleName: Joi.string().min(2).max(20).required(),
             permission: Joi.object().required().unknown(true)
         }).validate({ roleName, companyid, permission });
-
 
         if (error) {
             throw error.details[0]

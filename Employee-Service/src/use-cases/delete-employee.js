@@ -4,8 +4,6 @@ module.exports = function makeDeleteEmployee({ EmployeeTable, Joi }){
         try{
             const validatedId = validateData ({ id });
             await EmployeeTable.deleteEmployee( {id: validatedId.id} ) 
-
-            return "employee deleted successfully";
         }
         catch(err){
             throw err.message
@@ -23,5 +21,4 @@ module.exports = function makeDeleteEmployee({ EmployeeTable, Joi }){
        
         return value 
     }
-
 }

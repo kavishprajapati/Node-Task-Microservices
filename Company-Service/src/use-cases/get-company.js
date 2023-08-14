@@ -9,7 +9,6 @@ module.exports = function makeGetCompany({ companyTable, Joi }) {
             }
 
             return companyData
-
         }
         catch (err) {
             throw err.message
@@ -24,11 +23,7 @@ module.exports = function makeGetCompany({ companyTable, Joi }) {
         if (error) {
             throw error.details[0];
         }
-       
+
         return value;
     }
 }
-
-
-
-

@@ -4,16 +4,16 @@ module.exports = function makeGetAllCompanyAction({ getAllCompany }) {
             const companyData = await getAllCompany();
             res.status(200).json({
                 status: "Success",
-                data: { companyData }
+                data: { companyData: companyData }
             })
-        } 
+        }
         catch (err) {
-            res.status(400).json({
-                status: "fail",
-                data: {
-                    error: err
-                }
+            res.status(404).json({
+                status: "Fail",
+                data: { error: err }
             })
         }
     }
 }
+
+

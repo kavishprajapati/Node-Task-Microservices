@@ -2,29 +2,42 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
     return async function createEmployee({cmpId ,companyName,  empName, contact, role }) {
 
         try {
+
             const validatedData = validateData({ cmpId, companyName, empName, contact, role });
 
             if(validatedData.companyName){
+                
                 const companyID = await getCompanyId({ companyName }) //this is internal call which fetch company id from company
-                await EmployeeTable.createEmployee({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
+            
+                const result = await EmployeeTable.createEmployee({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
+
+                if(!result){
+                    throw new Error("Not able to fetch employee id")
+                }
+
+                return result
             }
             
-            else{
+            else {
                 const empData = await EmployeeTable.createEmployee({ cmpId: cmpId, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role }) 
-
+                
                 const permission = {
                     "employee": {
                         "create": true,
                         "delete": true,
-                        "read": true,
+                        "read":   true,
                         "update": true
                       },
                       "role": {
                         "create": true,
                         "delete": true,
-                        "read": true,
+                        "read":   true,
                         "update": true
                       }
+                }
+
+                if(!empData){
+                    throw new Error("Not able to fetch employee data")
                 }
 
                 if(empData.role == 'admin'){
@@ -34,13 +47,15 @@ module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi,
                     await assignRole({ roleid: result.roleid, employeeid: empData.empid })
                 }
 
+                return empData.empid
+
             }
 
         }
+
         catch (err) {
             throw err.message
         }
-
     }
 
     function validateData({ cmpId, companyName, empName, contact, role }) {

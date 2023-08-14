@@ -1,6 +1,5 @@
 const {getAllCompany, createCompany, deleteCompany, getCompany, updateCompany, getCompanyByName} = require('../use-cases')
 
-
 //to get-all-data
 const makeGetAllCompanyAction = require('./get-all-company')
 const getAllCompanyAction = makeGetAllCompanyAction({getAllCompany})

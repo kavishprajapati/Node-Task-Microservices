@@ -7,16 +7,15 @@ module.exports = function makeUpdateEmployeeAction ({ updateEmployee }) {
             await updateEmployee({ updateData, id })
             res.status(200).json({
                 status: "Success",
-                data: "Employee Data Updated Successfully"
+                data: { message: "Employee Data Updated Successfully" }
             })
         }
         catch(err){
             res.status(400).json({
                 status: "Fail",
-                data: "Fail to update employee data"
+                data: { error: err }
             })
         }
-
     }
 }
 

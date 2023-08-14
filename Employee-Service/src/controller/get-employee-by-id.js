@@ -7,17 +7,15 @@ module.exports = function makeGetEmployeeDataByIdAction({ getEmployeeDataById })
 
             res.status(200).json({
                 status: "Success",
-                data: {
-                    employeeData
-                }
+                data: { employeeData: employeeData }
             })
         }
         catch(err){
             res.status(400).json({
                 status: "Fail",
-                data: err
+                data: { error: err }
             })
-        }
-        
+        }      
     }
 }
+

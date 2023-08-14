@@ -3,20 +3,19 @@ module.exports = function makeCreateEmployeeAction({ createEmployee }){
 
         try{
             const { cmpId, companyName, empName, contact, role } = req.body;
-            const newEmployee = await createEmployee ({ cmpId ,companyName, empName, contact, role})
-            console.log(newEmployee);
+            const newEmployee = await createEmployee ({ cmpId ,companyName, empName, contact, role })
+
             res.status(201).json({
-                status: "New Employee Created Successfully",
-                data: newEmployee
+                status: "Success",
+                data: { employeeId: newEmployee }
             })
         }
+
         catch(err){
-            console.log(err);
             res.status(400).json({
-                status: "Error", 
-                data: err
+                status: "Fail", 
+                data: { Error: err }
             })
-        }
-        
+        }   
     }
 }

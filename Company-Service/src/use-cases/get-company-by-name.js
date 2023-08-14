@@ -10,14 +10,11 @@ module.exports = function makeGetCompanyByName({ companyTable, Joi }){
             }
 
             return companyData
-
         }
         catch(err){
-            console.log(err.message);
             throw err.message;
         }
     }
-
 
     function validateData({ companyname }) {
         const { error, value } = Joi.object({
@@ -29,7 +26,5 @@ module.exports = function makeGetCompanyByName({ companyTable, Joi }){
         }
         
         return value;
-        
     }
 }
-

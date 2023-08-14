@@ -8,13 +8,13 @@ module.exports = function makeCreateRoleAction({ createRole }){
             
             res.status(201).json({
                 status: "Success",
-                data: "New Role Is Created"
+                data: { message: "New Role Is Created"}
             })
         }
         catch(err){
             res.status(400).json({
-                status: "fail",
-                data: err
+                status: "Fail",
+                data: {error: err}
             })
         }
 
