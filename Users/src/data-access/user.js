@@ -17,7 +17,7 @@ function makeUser({ cockroach, bcrypt }) {
             const encryptedPassword = await bcrypt.hash(password, 10)
             const createUser = await cockroach.query(`INSERT INTO ${userTable} (userid, username, useremail, password) VALUES (gen_random_uuid(), '${username}', '${useremail}', '${encryptedPassword}') RETURNING *`);
             
-            const result = createUser.rows
+            const result = createUser && createUser.rows || false;
         
             if ( !result || !result.length ){
                 
@@ -35,7 +35,8 @@ function makeUser({ cockroach, bcrypt }) {
     async function getAllUser() {
         try {
             const allUser = await cockroach.query(`select * from ${userTable}`)
-            const result = allUser.rows;
+
+            const result = allUser && allUser.rows || false;
 
             if (!result || !result.length ) {
 
@@ -52,7 +53,8 @@ function makeUser({ cockroach, bcrypt }) {
     async function getUserDataById({ id }) {
         try {
             const getDataById = await cockroach.query(`select * from ${userTable} where userid = '${id}'`)
-            const result = getDataById.rows
+
+            const result = getDataById && getDataById.rows || false; 
 
             if (!result || !result.length) {
 
@@ -69,7 +71,7 @@ function makeUser({ cockroach, bcrypt }) {
 
     async function deleteUser({ id }) {
         try {
-            const userdelete = cockroach.query(`delete from ${userTable} where userid = '${id}'`)
+            cockroach.query(`delete from ${userTable} where userid = '${id}'`)
         }
         catch (err) {
             throw err
@@ -91,7 +93,7 @@ function makeUser({ cockroach, bcrypt }) {
 
             update.push(`password = '${encryptedPassword}'`);
 
-            const updateQuery = await cockroach.query(`UPDATE ${userTable} SET ${update.join(',')} WHERE userid = '${id}'`);
+             await cockroach.query(`UPDATE ${userTable} SET ${update.join(',')} WHERE userid = '${id}'`);
         }
         catch (err) {
             throw err;
@@ -101,7 +103,8 @@ function makeUser({ cockroach, bcrypt }) {
     async function getUserByName({ username }) {
         try {
             const loggedUser = await cockroach.query(`select * from ${userTable} where username = '${username}'`)
-            const result = loggedUser.rows
+       
+            const result = loggedUser && loggedUser.rows || false; 
 
             if (!result || !result.length ){
                 

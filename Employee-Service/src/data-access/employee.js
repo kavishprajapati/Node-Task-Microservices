@@ -23,10 +23,11 @@ function makeEmployee({ cockroach }) {
 
   async function createEmployee({ cmpId, empName, contact, role }) {
     try {
-
+      console.log(cmpId, empName, contact, role);
       const createEmp = await cockroach.query(`INSERT INTO ${employeeTable} (cmpId, EmpId, empName, contact, role) VALUES('${cmpId}', gen_random_uuid(), '${empName}', '${contact}', '${role}') RETURNING * `);
-
-      const result = createEmp.rows
+      
+      const result = createEmp && createEmp.rows || false;
+      
 
       if (!result || !result.length) {
 
@@ -47,7 +48,7 @@ function makeEmployee({ cockroach }) {
     try {
       const allEmployeeData = await cockroach.query(`select * from ${employeeTable}`);
 
-      const result = allEmployeeData.rows;
+      const result = allEmployeeData && allEmployeeData.rows || false;
 
       if (!result || !result.length) {
 
@@ -68,7 +69,7 @@ function makeEmployee({ cockroach }) {
 
       const getDataById = await cockroach.query(`select * from ${employeeTable} where empid = '${id}' `)
 
-      const result = getDataById.rows;
+      const result = getDataById && getDataById.rows || false;
 
       if (!result || !result.length) {
 
@@ -85,7 +86,7 @@ function makeEmployee({ cockroach }) {
 
   async function deleteEmployee({ id }) {
     try {
-      const deleteEmployee = await cockroach.query(`delete from ${employeeTable} where empid = '${id}'`)
+       await cockroach.query(`delete from ${employeeTable} where empid = '${id}'`)
     }
     catch (err) {
       throw err
@@ -94,7 +95,7 @@ function makeEmployee({ cockroach }) {
 
   async function deleteEmployeesByCompanyId({ companyId }) {
     try {
-      const deleteEmployees = await cockroach.query(`delete from ${employeeTable} where cmpid = '${companyId}'`)
+       await cockroach.query(`delete from ${employeeTable} where cmpid = '${companyId}'`)
     }
     catch (err) {
       throw err
@@ -110,7 +111,7 @@ function makeEmployee({ cockroach }) {
         update.push(`${key} = '${value}'`);
       });
 
-      const updateQuery = await cockroach.query(`UPDATE ${employeeTable} SET ${update.join(',')} WHERE empid = '${id}'`)
+     await cockroach.query(`UPDATE ${employeeTable} SET ${update.join(',')} WHERE empid = '${id}'`)
 
     }
     catch (err) {
@@ -127,7 +128,7 @@ function makeEmployee({ cockroach }) {
 
       const createRole = await cockroach.query(`INSERT INTO ${roleTable} (roleid, roleName, companyid, permission) VALUES (gen_random_uuid(), $1, $2, $3) RETURNING *`, [roleName, companyid, JSON.stringify(permission)]);
      
-      const result = createRole.rows
+      const result = createRole && createRole.rows || false;
 
       if (!result || !result.length ) {
 
@@ -147,7 +148,7 @@ function makeEmployee({ cockroach }) {
 
       const allRoleDetails = await cockroach.query(`select * from ${roleTable}`);
 
-      const result = allRoleDetails.rows
+      const result = allRoleDetails && allRoleDetails.rows || false;
 
       if ( !result || !result.length ) {
         
@@ -166,7 +167,7 @@ function makeEmployee({ cockroach }) {
 
     try {
 
-      const deleterole = await cockroach.query(`delete from ${roleTable} where roleid = '${id}'`)
+       await cockroach.query(`delete from ${roleTable} where roleid = '${id}'`)
 
     }
     catch (err) {
@@ -180,9 +181,10 @@ function makeEmployee({ cockroach }) {
       const query = `UPDATE ${roleTable} SET roleName = $1, permission = $2 WHERE roleId = $3`;
       const values = [roleName, permission, id];
 
-      const result = await cockroach.query(query, values);
+       await cockroach.query(query, values);
 
-    } catch (err) {
+    } 
+    catch (err) {
       throw err;
     }
   }
@@ -193,7 +195,7 @@ function makeEmployee({ cockroach }) {
 
       const getDataById = await cockroach.query(`select * from ${roleTable} where roleid = '${id}'`)
 
-      const result = getDataById.rows;
+      const result = getDataById && getDataById.rows || false;
 
 
       if (!result || !result.length) {
@@ -216,7 +218,7 @@ function makeEmployee({ cockroach }) {
 
     try {
 
-      const roleAssigned = await cockroach.query(`insert into ${assignedRole} (id, role_id, employee_id) values(gen_random_uuid(), '${roleid}', '${employeeid}')`)
+       await cockroach.query(`insert into ${assignedRole} (id, role_id, employee_id) values(gen_random_uuid(), '${roleid}', '${employeeid}')`)
 
     }
     catch (err) {
@@ -227,10 +229,13 @@ function makeEmployee({ cockroach }) {
   async function getAssignedRole() {
     try {
       const getAssignedRole = await cockroach.query(`select * from ${assignedRole}`)
-      const result = getAssignedRole.rows
+
+      const result = getAssignedRole && getAssignedRole.rows || false;
 
       if (!result || !result.length) {
+
         return false
+
       }
 
       return result;
@@ -244,7 +249,7 @@ function makeEmployee({ cockroach }) {
     try {
       const getAssignedRole = await cockroach.query(`select * from ${assignedRole} where employee_id = '${id}'`)
    
-      const result = getAssignedRole.rows
+      const result = getAssignedRole && getAssignedRole.rows || false;
 
       if (!result || !result.length) {
         return false
@@ -260,7 +265,7 @@ function makeEmployee({ cockroach }) {
   async function deleteAssignedrole({ id }) {
     try {
 
-      const deleteAssignedRole = await cockroach.query(`delete from ${assignedRole} where id = '${id}'`)
+      await cockroach.query(`delete from ${assignedRole} where id = '${id}'`)
 
     }
     catch (err) {

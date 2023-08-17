@@ -1,14 +1,14 @@
 module.exports = function makeCreateEmployee({ getCompanyId, EmployeeTable, Joi, createRole, assignRole }) {
-    return async function createEmployee({cmpId ,companyName,  empName, contact, role }) {
+    return async function createEmployee({ cmpId ,companyName,  empName, contact, role }) {
 
         try {
+
+            console.log( cmpId ,companyName,  empName, contact, role )
 
             const validatedData = validateData({ cmpId, companyName, empName, contact, role });
 
             if(validatedData.companyName){
-                
                 const companyID = await getCompanyId({ companyName }) //this is internal call which fetch company id from company
-            
                 const result = await EmployeeTable.createEmployee({ cmpId: companyID, empName: validatedData.empName, contact: validatedData.contact, role: validatedData.role })
 
                 if(!result){

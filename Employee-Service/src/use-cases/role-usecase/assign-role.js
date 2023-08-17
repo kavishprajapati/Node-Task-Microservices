@@ -1,5 +1,3 @@
-const { result } = require("../delete-employee.spec")
-
 module.exports = function makeAssignRole({ EmployeeTable, Joi }){
     return async function assignRole({ roleid, employeeid }){
 

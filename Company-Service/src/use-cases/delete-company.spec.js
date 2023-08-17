@@ -31,6 +31,7 @@ Before(() => {
         expect(args).deep.equal({
             id: args.id
         })
+        
         return "Company deleted successfully";
     })
 

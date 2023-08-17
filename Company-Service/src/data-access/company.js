@@ -14,9 +14,9 @@ function makeCompany({ cockroach }) {
     async function getAllCompanyData() {
 
         try {
-            const data = await cockroach.query(`select * from ${companyTable}`)
+            const data = await cockroach.query(`select * from ${companyTable}`);
 
-            const result = data.rows;
+            const result = data && data.rows || false;
 
             if (!result || !result.length) {
 
@@ -36,14 +36,16 @@ function makeCompany({ cockroach }) {
         try {
             const getData = await cockroach.query(`select * from ${companyTable} where id = '${id}'`)
 
-            const result = getData.rows;
+            const result = getData && getData.rows || false;
 
             if (!result || !result.length) {
+
                 return false
             }
 
             return result;
         }
+
         catch (err) {
             throw err
         }
@@ -56,7 +58,7 @@ function makeCompany({ cockroach }) {
         try {
             const createCompany = await cockroach.query(`insert into ${companyTable} (id, name, city, address, contact) values(gen_random_uuid(), '${name}', '${city}', '${address}', '${contact}')  RETURNING *`);
 
-            const result = createCompany.rows
+            const result =  createCompany && createCompany.rows || false;
 
             if (!result || !result.length) {
 
@@ -103,7 +105,7 @@ function makeCompany({ cockroach }) {
         try {
             const dataByNameQuery = await cockroach.query(`select * from ${companyTable} where name = '${companyname}'`)
 
-            const result = dataByNameQuery.rows;
+            const result = dataByNameQuery && dataByNameQuery.rows || false;
 
             if (!result || !result.length) {
                 return false
